@@ -20,9 +20,9 @@ $(function() {
         /* Show / Hide Password Recover Form */
         $('#password').on('click', function(e) {
             e.preventDefault();
-            $('.form-signin').slideUp(300, function() {
+            /*$('.form-signin').slideUp(300, function() {
                 $('.form-password').slideDown(300);
-            });
+            });*/
         });
         $('#login').on('click', function(e) {
             e.preventDefault();
