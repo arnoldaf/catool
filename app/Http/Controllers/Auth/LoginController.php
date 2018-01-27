@@ -58,7 +58,7 @@ class LoginController extends Controller
         }       
         $email = $request->email;
         $password = $request->password;
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {            
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1'])) {            
             return response()->json(['result' => true, 'msg' => 'Success']);
         }
         
