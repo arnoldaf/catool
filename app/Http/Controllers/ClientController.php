@@ -1,32 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use App\Services\ClientService;
 
-use App\Http\Controllers\Controller;
-
-class ClientController extends Controller {
-    /*
-      |--------------------------------------------------------------------------
-      | Login Controller
-      |--------------------------------------------------------------------------
-      |
-      | This controller handles authenticating users for the application and
-      | redirecting them to your home screen. The controller uses a trait
-      | to conveniently provide its functionality to your applications.
-      |
-     */
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        // nothing
+class ClientController extends Controller
+{
+    public function getUser() {
+        $data = (new Example)->getUsersData();
+        
+        return view('welcome', $data);
     }
-
-    public function index() {
-        return view('layouts.user');
-    }
-
+	
+	public function createClient(Request $request){
+		$data = (new ClientService)->createClient($request);
+		return response()->json($data);
+	}
 }
