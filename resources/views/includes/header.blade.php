@@ -210,7 +210,7 @@
                     <a href="#"><i class="icon-settings"></i><span>Account Settings</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="icon-logout"></i><span>Logout</span></a>
+                    <a href="{{url('auth/logout')}}"><i class="icon-logout"></i><span>Logout</span></a>
                 </li>
             </ul>
         </li>
