@@ -60,7 +60,10 @@ class LoginController extends Controller
         $email = $request->email;
         $password = $request->password;
         if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1'])) { 
-            
+            $user = Auth::user();
+            $user->last_login = date('Y-m-d h:i:s');
+            $user->is_login = 1;
+            $user->save();
             $eventLog = new EventLog();
             $eventLog->event_name = 'Login to system';
             $eventLog->user_id = Auth::id();
