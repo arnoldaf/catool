@@ -215,8 +215,7 @@
             </ul>
         </li>
         <!-- END USER DROPDOWN -->
-        <!-- CHAT BAR ICON -->
-        <li id="quickview-toggle"><a href="#"><i class="icon-bubbles"></i></a></li>
+        
     </ul>
 </div>
 <!-- header-right -->
