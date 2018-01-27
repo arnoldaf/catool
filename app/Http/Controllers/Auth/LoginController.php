@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\EventLog;
 
 class LoginController extends Controller
 {
@@ -58,7 +59,13 @@ class LoginController extends Controller
         }       
         $email = $request->email;
         $password = $request->password;
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1'])) {            
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1'])) { 
+            
+            $eventLog = new EventLog();
+            $eventLog->event_name = 'Login to system';
+            $eventLog->user_id = Auth::id();
+            $eventLog->ip = request()->ip();
+            $eventLog->save();
             return response()->json(['result' => true, 'msg' => 'Success']);
         }
         

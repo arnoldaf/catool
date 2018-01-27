@@ -34,6 +34,6 @@ class CreateSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sessions');
+        Schema::drop($this->tbl);
     }
 }
