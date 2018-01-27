@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSessionsTable extends Migration
+class CreateRolesTable extends Migration
 {
-    private $tbl = 'sessions';
+    private $tbl = 'roles';
     
     /**
      * Run the migrations.
@@ -18,12 +19,10 @@ class CreateSessionsTable extends Migration
             return;
         }
         Schema::create($this->tbl, function (Blueprint $table) {
-            $table->string('id');
-            $table->integer('user_id')->nullable(true);
-            $table->string('ip_address');
-            $table->string('user_agent');
-            $table->text('payload');
-            $table->integer('last_activity');
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 
@@ -34,6 +33,6 @@ class CreateSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sessions');
+        Schema::dropIfExists('roles');
     }
 }
