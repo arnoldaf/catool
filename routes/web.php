@@ -17,4 +17,6 @@ Route::post('/auth/login', 'Auth\LoginController@postLogin');
 Route::any('/auth/logout', 'Auth\LoginController@logout');
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/client', 'ClientController@index');
+Route::post('/createClient', 'ClientController@createClient');
+
 
