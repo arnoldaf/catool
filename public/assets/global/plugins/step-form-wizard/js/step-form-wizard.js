@@ -126,7 +126,25 @@
 
 
         widget.element.on('click', '.next-btn', function(e, data) {
-            var ret = false;
+            var ret = false,
+                formFlag = true,
+                focused = false;
+            $('.sf-step-active').find('.required').each(function(index){
+                if ($(this).val() == "") {
+                    $(this).addClass('form-error');
+                    if (!focused){
+                        $(this).focus();  
+                        focused = true;
+                    } 
+                    formFlag = false;
+                } else {
+                    $(this).removeClass('form-error');
+                }
+            });
+            if (!formFlag) {
+                data.ret = formFlag;
+            }
+            
             if(widget.config.onNext(widget.stepActive, widget.wizard) !== false) {
                 ret = widget.goTo($('.sf-controls .next-btn', widget.element).data('step'));
             }
