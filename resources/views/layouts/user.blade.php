@@ -31,7 +31,12 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="style">
                                         <div class="wizard-div current wizard-arrow">
-                                            <form class="wizard" data-style="arrow" role="form">
+
+                                            <form class="wizard" data-style="arrow" role="form" method="post" id="create_client" name="create_client">
+                                                <div id="basic-preview" class="preview active alert-message hide">
+                                                    <div class="alert media fade in alert-danger">
+                                                    </div>
+                                                </div>
                                                 {{ Form::open(array('url'=>'form-submit')) }}
                                                 <fieldset>
                                                     <legend>Basic</legend>
@@ -39,15 +44,15 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client First Name</label>
-                                                                {{ Form::text('first_name','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter First Name','required'=>'required')) }}
+                                                                {{ Form::text('first_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter First Name')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client Middle Name</label>
-                                                                {{ Form::text('middle_name','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Middle Name','required'=>'required')) }}
+                                                                {{ Form::text('middle_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Middle Name')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client Last Name</label>
-                                                                {{ Form::text('last_name','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Last Name','required'=>'required')) }}
+                                                                {{ Form::text('last_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Last Name')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Type</label>
@@ -55,29 +60,29 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">URL</label>
-                                                                {{ Form::url('url','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client URL','required'=>'required')) }}
+                                                                {{ Form::text('url','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client URL')) }}
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client Code</label>
-                                                                {{ Form::text('client_code','CA-MYCA218',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client Code','required'=>'required')) }}
+                                                                {{ Form::text('client_code','CA-MYCA218',array('id'=>'','class'=>'form-control required','placeholder'=>'Enter Client Code')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Email</label>
-                                                                {{ Form::email('client_email','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client Email','required'=>'required')) }}
+                                                                {{ Form::email('client_email','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Email')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Mobile</label>
-                                                                {{ Form::text('client_mobile','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client Mobile','required'=>'required')) }}
+                                                                {{ Form::text('client_mobile','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Mobile')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Login Password</label>
-                                                                {{ Form::text('client_password','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client Password','required'=>'required')) }}
+                                                                {{ Form::password('client_password',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Password')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Confirm Login Password</label>
-                                                                {{ Form::text('confirm_password','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Confirm Password','required'=>'required')) }}
+                                                                {{ Form::password('confirm_password',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Confirm Password')) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -88,33 +93,33 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Phone Number</label>
-                                                                {{ Form::text('phone','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Personal Phone','required'=>'required')) }}
+                                                                {{ Form::text('phone','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Personal Phone')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Email</label>
-                                                                {{ Form::text('personal_email','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Personal Email','required'=>'required')) }}
+                                                                {{ Form::text('personal_email','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Personal Email')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Address</label>
-                                                                {{ Form::text('address','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Address','required'=>'required')) }}
+                                                                {{ Form::text('address','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Address')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">City</label>
-                                                                {{ Form::text('city','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter City','required'=>'required')) }}
+                                                                {{ Form::text('city','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter City')) }}
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">State</label>
-                                                                {{ Form::text('state','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter State','required'=>'required')) }}
+                                                                {{ Form::text('state','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter State')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Country</label>
-                                                                {{ Form::text('country','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Country','required'=>'required')) }}
+                                                                {{ Form::text('country','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Country')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Zip Code</label>
-                                                                {{ Form::text('zipcode','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter ZipCode','required'=>'required')) }}
+                                                                {{ Form::text('zipcode','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter ZipCode')) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,13 +130,13 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Office Address</label>
-                                                                {{ Form::text('office_address','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Office Address','required'=>'required')) }}
+                                                                {{ Form::text('office_address','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Office Address')) }}
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Office Phone</label>
-                                                                {{ Form::text('office_phone','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Office Phone','required'=>'required')) }}
+                                                                {{ Form::text('office_phone','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Office Phone')) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -142,21 +147,25 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">GST Number</label>
-                                                                {{ Form::text('gst_number','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter GST Number','required'=>'required')) }}
+                                                                {{ Form::text('gst_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter GST Number')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">PAN Number</label>
-                                                                {{ Form::text('pan_number','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter PAN Number','required'=>'required')) }}
+                                                                {{ Form::text('pan_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter PAN Number')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Adhar Number</label>
-                                                                {{ Form::text('adhar_number','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Adhar Number','required'=>'required')) }}
+                                                                {{ Form::text('adhar_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Adhar Number')) }}
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Brand Name/Tag Name</label>
-                                                                {{ Form::text('brand_name','',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Brand Name','required'=>'required')) }}
+                                                                {{ Form::text('brand_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Brand Name')) }}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInput">Referral Code </label>
+                                                                {{ Form::text('referal_code','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Referral Code')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Plan Type</label>

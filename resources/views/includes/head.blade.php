@@ -10,3 +10,7 @@
 <link href="{{URL::asset('assets/admin/layout3/css/layout.css')}}" rel="stylesheet">
 
 <script src="{{URL::asset('assets/global/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js')}}"></script>
+
+<script>
+var SITE_URL = "{{url('')}}";
+</script>
