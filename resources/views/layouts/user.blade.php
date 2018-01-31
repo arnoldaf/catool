@@ -22,7 +22,7 @@
                 <!-- BEGIN PAGE CONTENT -->
                 <div class="page-content page-wizard">
                     <div class="header">
-                        <h2>MY <strong>Client</strong></h2>
+                        <h2>MY <strong>User</strong></h2>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">

@@ -26,7 +26,7 @@ class DashboardController extends Controller {
     }
 
     public function index() {
-        return view('layouts.client');
+        return view('layouts.dashboard');
     }
 
 }

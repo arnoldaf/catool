@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\ClientService;
+use App\Services\UserService;
 
-class ClientController extends Controller {
+class UserController extends Controller {
 
     public function __construct() {
         // nothing
     }
 
     public function index() {
-        return view('layouts.client');
+        return view('layouts.user');
     }
     
      public function indexlist() {
-        return view('layouts.clientlist');
+        return view('layouts.userlist');
     }
 
     public function getUser() {
@@ -25,8 +25,8 @@ class ClientController extends Controller {
         return view('welcome', $data);
     }
 
-    public function createClient(Request $request) {
-        $data = (new ClientService)->createClient($request);
+    public function createUser(Request $request) {
+        $data = (new UserService)->createUser($request);
         return response()->json($data);
     }
 

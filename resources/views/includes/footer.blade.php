@@ -35,3 +35,5 @@
 <script src="{{URL::asset('assets/global/js/pages/search.js')}}"></script> <!-- Search Script -->
 
 <script src="{{URL::asset('assets/admin/layout3/js/layout.js')}}"></script>
+
+<script src="{{URL::asset('assets/client.js')}}"></script>
