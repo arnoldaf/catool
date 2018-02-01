@@ -7,9 +7,9 @@ use Auth;
 use App\User;
 use App\Client;
 
-class ClientService {
+class UserService {
 
-    public function createClient($request) {
+    public function createUser($request) {
         $post_data = $request->all();
         $messges = [];
         $validator = Validator::make($request->all(), [
