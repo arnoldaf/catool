@@ -66,4 +66,16 @@ class ClientService
 		return ['result'=>true,'message'=>'User added successfully'];
 		
     }
+	
+	public function getClients($id) {
+		
+		if($id != null) {
+			$users = Client::find($id);
+		} else {
+			$users = Client::all();
+		}
+		return $users;
+    }
+	
+	
 }
