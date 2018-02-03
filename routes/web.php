@@ -22,5 +22,6 @@ Route::get('/user', 'UserController@index');
 Route::get('/userlist', 'UserController@indexlist');
 Route::post('/createClient', 'ClientController@createClient');
 Route::get('/getClients/{id?}', 'ClientController@getClients');
+Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
 
 
