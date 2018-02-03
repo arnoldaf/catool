@@ -17,7 +17,7 @@ class ClientService {
                     'last_name' => 'required|max:255',
                     'client_email' => 'required|email|max:255|unique:users,email',
                     'url' => 'required|max:255',
-                    'password' => 'required|min:6|max:20', 
+                    'password' => 'required|min:6|max:20',
                     'confirm_password' => 'required_with:password|same:password|min:6',
                     'client_mobile' => 'required|max:20',
                     'phone' => 'required',
@@ -97,6 +97,16 @@ class ClientService {
 
         $user->save();
         return ['result' => true, 'message' => 'User added successfully'];
+    }
+
+    public function getClients($id) {
+
+        if ($id != null) {
+            $users = Client::find($id);
+        } else {
+            $users = Client::all();
+        }
+        return $users;
     }
 
 }
