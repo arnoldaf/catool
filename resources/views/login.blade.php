@@ -33,12 +33,13 @@
                 </ul>
             </div>
             <div class="account-form">
-                <div class="col-sm-12">
-                    <div class="col-sm-3">
+                <div class="col-sm-12" style="padding:0px">
+                    <div class="col-sm-3" style="padding-left:0px">
                          <img src="{{URL::asset('assets/global/images/clients/ca_logo.png')}}" title="client logo">
                     </div>
-                    <div class="col-sm-9">
-                        <h3 style="text-align:right"><b>XYZ & Company</b></h3>
+                    <div class="col-sm-9" style="padding-left:24px">
+                        <h3 style="margin:0px 0px 9px 0px"><b> {{ Session::get('brand_name') }}</b></h3>
+                        <span style="color: #81b84d; font-size: 12px; font-weight: bold"> CHARTERED ACCOUNTANT </span>
                     </div>    
                 </div>
                 <p> &nbsp; </p>

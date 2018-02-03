@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\EventLog;
+use App\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -42,6 +45,8 @@ class LoginController extends Controller
     }
     
     public function getLogin() {
+        setClientConfData();
+       
         return view('login');
     }
     
@@ -59,11 +64,26 @@ class LoginController extends Controller
         }       
         $email = $request->email;
         $password = $request->password;
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1'])) { 
+        $clientId = Session::get('client_id');
+        $loggedFlag = false;
+        if ($clientId > 0) {
+            if (Auth::attempt(['id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
+                Auth::user();
+                $loggedFlag = true;
+            }
+            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
+                Auth::user();
+                $loggedFlag = true;
+            }
+        }
+        else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) { 
             $user = Auth::user();
             $user->last_login = date('Y-m-d h:i:s');
             $user->is_login = 1;
             $user->save();
+            $loggedFlag = true;
+        }
+        if ($loggedFlag) {
             $eventLog = new EventLog();
             $eventLog->event_name = 'Login to system';
             $eventLog->user_id = Auth::id();
@@ -77,6 +97,9 @@ class LoginController extends Controller
     
     public function logout()
     {
+        $user = Auth::user();
+        $user->is_login = 0;
+        $user->save();
         Auth::logout();
         
         return redirect(url('auth/login'));
