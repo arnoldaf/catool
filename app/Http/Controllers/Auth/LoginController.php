@@ -101,8 +101,10 @@ class LoginController extends Controller
     public function logout()
     {
         $user = Auth::user();
-        $user->is_login = 0;
-        $user->save();
+        if ($user) {
+            $user->is_login = 0;
+            $user->save();
+        }
         Auth::logout();
         
         return redirect(url('auth/login'));
