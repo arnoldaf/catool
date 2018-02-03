@@ -67,28 +67,31 @@ class LoginController extends Controller
         $clientId = Session::get('client_id');
         $loggedFlag = false;
         if ($clientId > 0) {
-            if (Auth::attempt(['id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
-                Auth::user();
+            if (Auth::attempt(['id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {                
                 $loggedFlag = true;
             }
-            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
-                Auth::user();
+            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {               
+                $loggedFlag = true;
+            }
+            else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
                 $loggedFlag = true;
             }
         }
-        else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) { 
+        else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
+            $loggedFlag = true;
+        }
+        if ($loggedFlag) {
             $user = Auth::user();
             $user->last_login = date('Y-m-d h:i:s');
             $user->is_login = 1;
             $user->save();
-            $loggedFlag = true;
-        }
-        if ($loggedFlag) {
             $eventLog = new EventLog();
             $eventLog->event_name = 'Login to system';
             $eventLog->user_id = Auth::id();
             $eventLog->ip = request()->ip();
+            $eventLog->info = json_encode($_SERVER);
             $eventLog->save();
+            
             return response()->json(['result' => true, 'msg' => 'Success']);
         }
         

@@ -24,6 +24,7 @@ class CreateTableEventLogs extends Migration
             $table->string('event_name');
             $table->integer('user_id')->nullable(true);
             $table->string('ip');
+            $table->text('info');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
