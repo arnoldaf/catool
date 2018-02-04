@@ -56,7 +56,8 @@ $(function() {
                 data:formData, 
                 dataType: "JSON",
                 error: function() {
-                  _msgDiv.removeClass('hide').html('Sorry Try again letter!');  
+                  _msgDiv.removeClass('hide').html('Sorry Try again letter!'); 
+                  loader.stop();
                 },
                 success: function(resp) {
                     if (resp.result) {
