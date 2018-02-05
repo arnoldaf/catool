@@ -31,12 +31,10 @@ class UserService {
                     'gst_number' => 'required',
                     'pan_number' => 'required',
                     'adhar_number' => 'required',
-                    'brand_name' => 'required',
                         ], [
                     'first_name.required' => 'First Name is required.',
                     'last_name.required' => 'Last Name is required.',
                     'client_email.required' => 'We need to know your e-mail address!',
-                    'url.required' => 'URL is required.',
                     'password.required' => 'Password is required.',
                     'confirm_password.required' => 'Confirm Password is required.',
                     'client_mobile' => 'Mobile Number is required.',
@@ -51,7 +49,6 @@ class UserService {
                     'gst_number' => 'GST Number is required.',
                     'pan_number' => 'PAN Number is required.',
                     'adhar_number' => 'Adhar Number is required.',
-                    'brand_name' => 'Brand Name is required.',
                         ]
         );
 
@@ -64,7 +61,7 @@ class UserService {
         }
 
 
-        $user = Client::create([
+        $user = User::create([
                     'first_name' => $request->input('first_name'),
                     'middle_name' => $request->input('middle_name'),
                     'last_name' => $request->input('last_name'),

@@ -32,7 +32,7 @@
                                     <div class="tab-pane active" id="style">
                                         <div class="wizard-div current wizard-arrow">
 
-                                            <form class="wizard" data-style="arrow" role="form" method="post" id="create_client" name="create_client">
+                                            <form class="wizard" data-style="arrow" role="form" method="post" id="create_user" name="create_user">
                                                 <div id="basic-preview" class="preview active alert-message hide">
                                                     <div class="alert media fade in alert-danger">
                                                     </div>
@@ -43,31 +43,26 @@
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
-                                                                <label for="exampleInput">Client First Name</label>
+                                                                <label for="exampleInput">User First Name</label>
                                                                 {{ Form::text('first_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter First Name')) }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInput">Client Middle Name</label>
+                                                                <label for="exampleInput">User Middle Name</label>
                                                                 {{ Form::text('middle_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Middle Name')) }}
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInput">Client Last Name</label>
+                                                                <label for="exampleInput">User Last Name</label>
                                                                 {{ Form::text('last_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Last Name')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Type</label>
-                                                                {{ Form::select('client_type',array('ca'=>'CA','lawyer'=>'Lawyer','cs'=>'CS'),'CA') }}
+                                                                {{ Form::select('client_type',array(
+'1'=>'Individual ','2'=>'Sole Proprietorship','3'=>'HUF (Hindu Undivided Family)','4'=>'AOP ( Association of Person )','5'=>'BOI ( Body of Individual )','6'=>'Limited Liability Partnership Firm','cs'=>'Private Limited Company','7'=>'Public Company'),'Individual') }}
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">URL</label>
-                                                                {{ Form::text('url','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client URL')) }}
-                                                            </div>
+
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Client Code</label>
-                                                                {{ Form::text('client_code','CA-MYCA218',array('id'=>'','class'=>'form-control required','placeholder'=>'Enter Client Code')) }}
-                                                            </div>
+
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Email</label>
                                                                 {{ Form::email('client_email','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Email')) }}
@@ -153,24 +148,15 @@
                                                                 <label for="exampleInput">PAN Number</label>
                                                                 {{ Form::text('pan_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter PAN Number')) }}
                                                             </div>
+
+                                                        </div>
+                                                        <div class="col-lg-6">
+
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Adhar Number</label>
                                                                 {{ Form::text('adhar_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Adhar Number')) }}
                                                             </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Brand Name/Tag Name</label>
-                                                                {{ Form::text('brand_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Brand Name')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Referral Code </label>
-                                                                {{ Form::text('referal_code','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Referral Code')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Plan Type</label>
-                                                                {{ Form::select('plan_type',array('free'=>'Free','1_month'=>'1 Month','3_month'=>'3 Month','6_month'=>'6 Month','12_month'=>'12 Month'),'enabled') }}
-                                                            </div>
+
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Status</label> 
                                                                 {{ Form::radio('status','enabled',true) }} Enabled
