@@ -16,12 +16,13 @@ Route::get('/auth/login', 'Auth\LoginController@getLogin');
 Route::post('/auth/login', 'Auth\LoginController@postLogin');
 Route::any('/auth/logout', 'Auth\LoginController@logout');
 Route::get('/dashboard', 'DashboardController@index');
-Route::get('/client', 'ClientController@index');
+Route::get('/client/{id?}', 'ClientController@index');
 Route::get('/clientlist', 'ClientController@indexlist');
 Route::get('/user', 'UserController@index');
 Route::get('/userlist', 'UserController@indexlist');
 Route::post('/createClient', 'ClientController@createClient');
 Route::get('/getClients/{id?}', 'ClientController@getClients');
 Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
+//Route::post('/updateClient', 'ClientController@updateClient');
 
 

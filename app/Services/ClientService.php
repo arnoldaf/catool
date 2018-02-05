@@ -77,6 +77,7 @@ class ClientService {
      * @return Response
      */
     public function getClients($id) {
+
         if ($id != null) {
             $users = Client::find($id);
         } else {
@@ -96,6 +97,26 @@ class ClientService {
         $client = Client::find($id);
         $client->delete();
         return ['result' => true, 'message' => 'User deleted successfully'];
+    }
+
+    public function updateClient($id, Request $request) {
+        $client = Client::findOrFail($id);
+        
+        print_r($client);
+        die;
+
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
+
+        $input = $request->all();
+
+        $task->fill($input)->save();
+
+        Session::flash('flash_message', 'Task successfully added!');
+
+        return redirect()->back();
     }
 
 }

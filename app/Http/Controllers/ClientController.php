@@ -4,11 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ClientService;
+use App\Client;
 
 class ClientController extends Controller {
+    /* public function index() {
+      return view('layouts.client');
+      }
 
-    public function index() {
-        return view('layouts.client');
+     * 
+     */
+
+    public function index($id = null) {
+        $users = [];
+        if ($id != null) {
+            //$users = (new ClientService)->getClients($id);
+            $users = Client::find($id)->toArray();
+        }
+
+        return view('layouts.client')->with('user', $users);
+
+        //return View::make('customers.edit')->with('customer', $customer);
     }
 
     public function indexlist() {
@@ -24,8 +39,15 @@ class ClientController extends Controller {
         $data = (new ClientService)->createClient($request);
         return response()->json($data);
     }
+    public function edit(Request $request, $id = 0)
+{
+    $user = User::findOrNew($id);
+    $user->fill($request->all());
+    $user->save();
+}
 
     public function getClients($id = null) {
+     
         $data = (new ClientService)->getClients($id);
         return response()->json($data);
     }
