@@ -37,7 +37,7 @@
                                                     <div class="alert media fade in alert-danger">
                                                     </div>
                                                 </div>
-
+												
 
                                                 {{ Form::open(array('url'=>'form-submit')) }}
                                                 <fieldset>
@@ -47,6 +47,7 @@
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client First Name</label>
                                                                 {{ Form::text('first_name', isset($user['first_name'])? $user['first_name'] : '',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter First Name')) }}
+																{{ Form::hidden('id', isset($user['id'])? $user['id'] : '',array('id'=>'','class'=>'form-control ')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client Middle Name</label>

@@ -83,7 +83,7 @@ class ClientService {
         } else {
             $users = Client::all();
         }
-        return $users;
+        return ['data' => $users];
     }
 
     /**
@@ -102,9 +102,6 @@ class ClientService {
     public function updateClient($id, Request $request) {
         $client = Client::findOrFail($id);
         
-        print_r($client);
-        die;
-
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required'

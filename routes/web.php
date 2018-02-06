@@ -26,4 +26,4 @@ Route::get('/getClients/{id?}', 'ClientController@getClients');
 Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
 //Route::post('/updateClient', 'ClientController@updateClient');
 
-
+ Route::resource('emailtemplates', 'EmailTemplateController');

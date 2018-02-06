@@ -20,7 +20,7 @@ class ClientController extends Controller {
             //$users = (new ClientService)->getClients($id);
             $users = Client::find($id)->toArray();
         }
-
+	
         return view('layouts.client')->with('user', $users);
 
         //return View::make('customers.edit')->with('customer', $customer);
