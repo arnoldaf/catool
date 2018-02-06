@@ -37,14 +37,15 @@ class ClientController extends Controller {
 
     public function createClient(Request $request) {
         $data = (new ClientService)->createClient($request);
+        
         return response()->json($data);
     }
     public function edit(Request $request, $id = 0)
-{
-    $user = User::findOrNew($id);
-    $user->fill($request->all());
-    $user->save();
-}
+    {
+        $user = User::findOrNew($id);
+        $user->fill($request->all());
+        $user->save();
+    }
 
     public function getClients($id = null) {
      

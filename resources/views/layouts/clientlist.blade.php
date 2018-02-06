@@ -143,7 +143,7 @@ $(document).ready(function () {
                 'orderable': false,
                 'className': 'dt-body-center',
                 'render': function (data, type, full, meta) {
-                    return '<div class="btn-group"> <a  href="client?id=' + full.id + '"><img height="20" width="20" title="EDIT" src="http://www.pvhc.net/img2/ssmdrdedzoranahwnojt.png"></a><a  href="javascript:void(0)"  onClick="deleteClient(' + full.id + ')"> <img height="20" width="20" title="DELETE" src="https://image.flaticon.com/icons/png/128/61/61391.png"></div>';
+                    return '<div class="btn-group"> <a  href="client/'+ full.id + '"><img height="20" width="20" title="EDIT" src="http://www.pvhc.net/img2/ssmdrdedzoranahwnojt.png"></a><a  href="javascript:void(0)"  onClick="deleteClient(' + full.id + ')"> <img height="20" width="20" title="DELETE" src="https://image.flaticon.com/icons/png/128/61/61391.png"></div>';
                 },
             },
         ]
@@ -154,7 +154,23 @@ $(document).ready(function () {
 });
 
 function deleteClient(id) {
-    return confirm('Are you sure you want to do this?');
+    var conf = confirm('Are you sure you want to do this?');
+    if(conf === true) {
+        
+         $.ajax({
+            type: "get",
+            url: SITE_URL + "/deleteClient/"+id, //Relative or absolute path to response.php file
+            data: {},
+            success: function (data) {
+                if (data.result === false) {
+                   alert(data);
+                } else {
+                   alert(data);
+                }
+            }
+        });
+
+    }
 
 }
     </script>
