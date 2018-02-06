@@ -9,49 +9,23 @@ use App\Client;
 
 class UserService {
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
     public function createUser($request) {
-        $post_data = $request->all();
         $messges = [];
+
+
         $validator = Validator::make($request->all(), [
                     'first_name' => 'required|max:255',
-                    'last_name' => 'required|max:255',
-                    'client_email' => 'required|email|max:255|unique:users,email',
-                    'url' => 'required|max:255',
-                    'password' => 'required|min:6|max:20', 
-                    'confirm_password' => 'required_with:password|same:password|min:6',
-                    'client_mobile' => 'required|max:20',
-                    'phone' => 'required',
-                    'personal_email' => 'required|email|max:255|unique:users,personal_email',
-                    'city_name' => 'required',
-                    'state_id' => 'required',
-                    'country_id' => 'required',
-                    'zip_code' => 'required',
-                    'office_address' => 'required',
-                    'office_phone' => 'required',
-                    'gst_number' => 'required',
-                    'pan_number' => 'required',
-                    'adhar_number' => 'required',
+                    'client_email' => 'required|email|max:255|unique:users,email,' . $request->input('id'),
                         ], [
-                    'first_name.required' => 'First Name is required.',
-                    'last_name.required' => 'Last Name is required.',
+                    'name.required' => 'Name is required.',
                     'client_email.required' => 'We need to know your e-mail address!',
-                    'password.required' => 'Password is required.',
-                    'confirm_password.required' => 'Confirm Password is required.',
-                    'client_mobile' => 'Mobile Number is required.',
-                    'phone' => 'Phone Number is required.',
-                    'personal_email' => 'Personal Email is required.',
-                    'city_name' => 'City Name is required.',
-                    'state_id' => 'State is required.',
-                    'country_id' => 'Country is required.',
-                    'zip_code' => 'ZipCode is required.',
-                    'office_address' => 'Office Address is required.',
-                    'office_phone' => 'Office Phone is required.',
-                    'gst_number' => 'GST Number is required.',
-                    'pan_number' => 'PAN Number is required.',
-                    'adhar_number' => 'Adhar Number is required.',
                         ]
         );
-
 
         if ($validator->fails()) {
             foreach ($validator->errors()->getMessages() as $key => $value) {
@@ -61,39 +35,69 @@ class UserService {
         }
 
 
-        $user = User::create([
-                    'first_name' => $request->input('first_name'),
-                    'middle_name' => $request->input('middle_name'),
-                    'last_name' => $request->input('last_name'),
-                    'client_email' => $request->input('email'),
-                    'url' => $request->input('url'),
-                    'password' => bcrypt($request->input('password')),
-                    'confirm_password' => bcrypt($request->input('confirm_password')),
-                    'mobile' => $request->input('client_mobile'),
-                    'phone' => $request->input('phone'),
-                    'city_name' => $request->input('city'),
-                    'state_id' => $request->input('state'),
-                    'country_id' => $request->input('country_id'),
-                    'zip_code' => $request->input('zipcode'),
-                    'personal_email' => $request->input('personal_email'),
-                    'brand_name' => $request->input('brand_name'),
-                    'user_type_id' => $request->input('client_type'),
-                    'role_id' => $request->input('role_id'),
-                    'user_type_id' => $request->input('plan_type'),
-                    'ip_address' => $request->ip(),
-                    'status' => 1,
-                    'address' => $request->input('address'),
-                    'office_address' => $request->input('office_address'),
-                    'client_code' => $request->input('client_code'),
-                    'office_phone' => $request->input('office_phone'),
-                    'gst_number' => $request->input('gst_number'),
-                    'pan_number' => $request->input('pan_number'),
-                    'adhar_number' => $request->input('adhar_number'),
-        ]);
-
-
-        $user->save();
-        return ['result' => true, 'message' => 'User added successfully'];
+        $Client = ($request->input('id') > 0 ) ? Client::find($request->input('id')) : new Client;
+        $Client->first_name = $request->input('first_name');
+        $Client->middle_name = $request->input('middle_name');
+        $Client->last_name = $request->input('last_name');
+        $Client->email = $request->input('client_email');
+        $Client->password = bcrypt($request->input('client_password'));
+        $Client->mobile = $request->input('client_mobile');
+        $Client->phone = $request->input('phone');
+        $Client->city_name = $request->input('city');
+        $Client->state_id = $request->input('state');
+        //$Client->country_id  =  $request->input('country_id');
+        $Client->zip_code = $request->input('zipcode');
+        $Client->personal_email = $request->input('personal_email');
+        
+        $Client->user_type_id = $request->input('client_type');
+     
+        $Client->ip_address = $request->ip();
+        $Client->status = 1;
+        $Client->address = $request->input('address');
+        $Client->office_address = $request->input('office_address');
+        $Client->client_code = $request->input('client_code');
+        $Client->office_phone = $request->input('office_phone');
+        $Client->gst_number = $request->input('gst_number');
+        $Client->pan_number = $request->input('pan_number');
+        $Client->adhar_number = $request->input('adhar_number');
+     
+        $Client->save();
+        if ($request->input('id') > 0) {
+            return ['result' => true, 'message' => 'User updated successfully'];
+        } else {
+            return ['result' => true, 'message' => 'User added successfully'];
+        }
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+     public function getUsers($id) {
+
+        if ($id != null) {
+            $users = Client::find($id);
+        } else {
+            $users = Client::all();
+        }
+        return ['data' => $users];
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function deleteUser($id) {
+        // delete
+        $client = Client::find($id);
+        $client->delete();
+        return ['result' => true, 'message' => 'User deleted successfully'];
+    }
+
+   
 }
