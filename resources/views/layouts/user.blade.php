@@ -20,151 +20,144 @@
                 <div class="topbar">@include('includes.header')</div>
                 <!-- END TOPBAR -->
                 <!-- BEGIN PAGE CONTENT -->
-                <div class="page-content page-wizard">
+                <div class="page-content">
                     <div class="header">
-                        <h2>MY <strong>User</strong></h2>
+                        <h2>New <strong>User</strong></h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li><a href="#">Make</a>
+                                </li>
+                                <li><a href="#">User</a>
+                                </li>
+                                <li class="active">Create New User</li>
+                            </ol>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="tabs tabs-linetriangle">
-                                <ul class="nav nav-tabs"></ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="style">
-                                        <div class="wizard-div current wizard-arrow">
 
-                                            <form class="wizard" data-style="arrow" role="form" method="post" id="create_user" name="create_user">
+                        <div class="col-md-6">
+                            <div class="panel panel-default no-bd">
+                                <div class="panel-header bg-dark">
+                                    <h2 class="panel-title"><strong>Create</strong> New User</h2>
+                                </div>
+                                <div class="panel-body bg-white">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <form role="form" class="form-validation"  method="post" id="create_users" name="create_users">
                                                 <div id="basic-preview" class="preview active alert-message hide">
                                                     <div class="alert media fade in alert-danger">
                                                     </div>
                                                 </div>
+                                              
                                                 {{ Form::open(array('url'=>'form-submit')) }}
-                                                <fieldset>
-                                                    <legend>Basic</legend>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">User First Name</label>
-                                                                {{ Form::text('first_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter First Name')) }}
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Firstname</label>
+                                                            <div class="append-icon">
+                                                                {{ Form::text('first_name',isset($user['first_name'])? $user['first_name'] : '',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter First Name','required')) }}
+                                                               {{ Form::hidden('id', isset($user['id'])? $user['id'] : '',array('id'=>'','class'=>'form-control ')) }}
+                                                                <i class="icon-user"></i>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">User Middle Name</label>
-                                                                {{ Form::text('middle_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Middle Name')) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Lastname</label>
+                                                            <div class="append-icon">
+                                                                 {{ Form::text('last_name',isset($user['last_name'])? $user['last_name'] : '',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Last Name','required')) }}
+                                                                <i class="icon-user"></i>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">User Last Name</label>
-                                                                {{ Form::text('last_name','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Last Name')) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Email Address</label>
+                                                            <div class="append-icon">
+                                                                {{ Form::email('client_email',isset($user['email'])? $user['email'] : '',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Email','required')) }}
+                                                                <i class="icon-envelope"></i>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Type</label>
-                                                                {{ Form::select('client_type',array(
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Choose client type</label>
+                                                            <div class="option-group">
+                                                                 {{ Form::select('client_type',array(
 '1'=>'Individual ','2'=>'Sole Proprietorship','3'=>'HUF (Hindu Undivided Family)','4'=>'AOP ( Association of Person )','5'=>'BOI ( Body of Individual )','6'=>'Limited Liability Partnership Firm','cs'=>'Private Limited Company','7'=>'Public Company'),'Individual') }}
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-lg-6">
-
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Email</label>
-                                                                {{ Form::email('client_email','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Email')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Mobile</label>
-                                                                {{ Form::text('client_mobile','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Mobile')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Login Password</label>
-                                                                {{ Form::password('client_password',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Password')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Confirm Login Password</label>
-                                                                {{ Form::password('confirm_password',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Confirm Password')) }}
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </fieldset>
-                                                <fieldset>
-                                                    <legend>Primary Contact</legend>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Phone Number</label>
-                                                                {{ Form::text('phone','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Personal Phone')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Email</label>
-                                                                {{ Form::text('personal_email','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Personal Email')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Address</label>
-                                                                {{ Form::text('address','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Address')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">City</label>
-                                                                {{ Form::text('city','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter City')) }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">State</label>
-                                                                {{ Form::text('state','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter State')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Country</label>
-                                                                {{ Form::text('country','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Country')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Zip Code</label>
-                                                                {{ Form::text('zipcode','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter ZipCode')) }}
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Phone Number</label>
+                                                            <div class="append-icon">
+                                                                 {{ Form::text('client_mobile',isset($user['mobile'])? $user['mobile'] : '',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Client Mobile','required')) }}
+                                                                <i class="icon-screen-smartphone"></i>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </fieldset>
-                                                <fieldset>
-                                                    <legend>Office Contact</legend>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Office Address</label>
-                                                                {{ Form::text('office_address','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Office Address')) }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Office Phone</label>
-                                                                {{ Form::text('office_phone','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Office Phone')) }}
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Upload your avatar</label>
+                                                            <div class="file">
+                                                                <div class="option-group">
+                                                                    <span class="file-button btn-primary">Choose File</span>
+                                                                    <input type="file" class="custom-file" name="avatar" id="avatar" onchange="document.getElementById('uploader').value = this.value;" >
+                                                                    <input type="text" class="form-control" id="uploader" placeholder="no file selected" readonly="">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </fieldset>
-                                                <fieldset>
-                                                    <legend>Other</legend>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">GST Number</label>
-                                                                {{ Form::text('gst_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter GST Number')) }}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">PAN Number</label>
-                                                                {{ Form::text('pan_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter PAN Number')) }}
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-lg-6">
-
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Adhar Number</label>
-                                                                {{ Form::text('adhar_number','',array('id'=>'','class'=>'form-control ','placeholder'=>'Enter Adhar Number')) }}
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="exampleInput">Status</label> 
-                                                                {{ Form::radio('status','enabled',true) }} Enabled
-                                                                {{ Form::radio('status','disabled') }} Disabled
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Password</label>
+                                                            <div class="append-icon">
+                                                                {{ Form::password('client_password',array('id'=>'password','class'=>'form-control ','placeholder'=>'Between 4 and 16 characters','minlength'=>'4', 'maxlength'=>'16', 'required' )) }}
+                                                                <i class="icon-lock"></i>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </fieldset>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Repeat your password</label>
+                                                            <div class="append-icon">
+                                                                 {{ Form::password('confirm_password',array('id'=>'password2','class'=>'form-control ','placeholder'=>'Must be equal to your first password..','minlength'=>'4', 'maxlength'=>'16', 'required')) }}
+                                                                <i class="icon-lock"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">What's the result of 4 + 8 ?</label>
+                                                            <input type="text" name="calcul" class="form-control" placeholder="Human verification!">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Are you OK with our terms?</label>
+                                                            <div class="option-group">
+                                                                <label  for="terms" class="m-t-10">
+                                                                    <input type="checkbox" name="terms" id="terms" data-checkbox="icheckbox_square-blue" required/>
+                                                                    I agree with terms and conditions
+                                                                </label>    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center  m-t-20">
+                                                    <button type="submit" name='submit' class="btn btn-embossed btn-primary">Create</button>
+                                                    <button type="reset" class="cancel btn btn-embossed btn-default m-b-10 m-r-0">Cancel</button>
+                                                </div>
                                                 {{ Form::close() }}
                                             </form>
                                         </div>
@@ -176,8 +169,8 @@
                     <div class="footer">
                         <div class="copyright">
                             <p class="pull-left sm-pull-reset">
-                                <span>Copyright <span class="copyright">©</span> 2018 </span>
-                                <span>MyCATool</span>.
+                                <span>Copyright <span class="copyright">©</span> 2016 </span>
+                                <span>THEMES LAB</span>.
                                 <span>All rights reserved. </span>
                             </p>
                             <p class="pull-right sm-pull-reset">
@@ -193,10 +186,10 @@
         </section>
 
         @include('includes.footer') 
+
         <!-- BEGIN PAGE SCRIPTS -->
-        <script src="{{URL::asset('assets/global/plugins/step-form-wizard/plugins/parsley/parsley.min.js')}}"></script> <!-- OPTIONAL, IF YOU NEED VALIDATION -->
-        <script src="{{URL::asset('assets/global/plugins/step-form-wizard/js/step-form-wizard.js')}}"></script> <!-- Step Form Validation -->
-        <script src="{{URL::asset('assets/global/js/pages/form_wizard.js')}}"></script>
-        <!-- END PAGE SCRIPTS -->
+        <script src="{{URL::asset('assets/global/plugins/jquery-validation/jquery.validate.js')}}"></script> <!-- Form Validation -->
+        <script src="{{URL::asset('assets/global/plugins/jquery-validation/additional-methods.min.js')}}"></script> <!-- Form Validation Additional Methods - OPTIONAL -->
+        <!-- END  PAGE SCRIPTS -->
     </body>
 </html>

@@ -40,12 +40,7 @@ class ClientController extends Controller {
         
         return response()->json($data);
     }
-    public function edit(Request $request, $id = 0)
-    {
-        $user = User::findOrNew($id);
-        $user->fill($request->all());
-        $user->save();
-    }
+   
 
     public function getClients($id = null) {
      

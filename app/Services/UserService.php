@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use Validator;
-use Auth;
-use App\User;
-use App\Client;
+use App\Users;
 
 class UserService {
 
@@ -14,16 +12,23 @@ class UserService {
      *
      * @return Response
      */
-    public function createUser($request) {
+    public function createUsers($request) {
+
         $messges = [];
-
-
         $validator = Validator::make($request->all(), [
                     'first_name' => 'required|max:255',
+                    'last_name' => 'required|max:255',
                     'client_email' => 'required|email|max:255|unique:users,email,' . $request->input('id'),
+                    'client_mobile' => 'required|max:10|unique:users,mobile,' . $request->input('id'),
+                    'client_password' => 'min:6',
+                    'confirm_password' => 'required_with:client_password|same:client_password|min:6'
                         ], [
-                    'name.required' => 'Name is required.',
+                    'first_name.required' => 'Name is required.',
+                    'last_name.required' => 'Name is required.',
                     'client_email.required' => 'We need to know your e-mail address!',
+                    'client_mobile.required' => 'We need to know your mobile!',
+                    'client_password.required' => 'Password is required!',
+                    'confirm_password.required' => 'Confirm Password must be same as password!',
                         ]
         );
 
@@ -35,33 +40,17 @@ class UserService {
         }
 
 
-        $Client = ($request->input('id') > 0 ) ? Client::find($request->input('id')) : new Client;
-        $Client->first_name = $request->input('first_name');
-        $Client->middle_name = $request->input('middle_name');
-        $Client->last_name = $request->input('last_name');
-        $Client->email = $request->input('client_email');
-        $Client->password = bcrypt($request->input('client_password'));
-        $Client->mobile = $request->input('client_mobile');
-        $Client->phone = $request->input('phone');
-        $Client->city_name = $request->input('city');
-        $Client->state_id = $request->input('state');
-        //$Client->country_id  =  $request->input('country_id');
-        $Client->zip_code = $request->input('zipcode');
-        $Client->personal_email = $request->input('personal_email');
-        
-        $Client->user_type_id = $request->input('client_type');
-     
-        $Client->ip_address = $request->ip();
-        $Client->status = 1;
-        $Client->address = $request->input('address');
-        $Client->office_address = $request->input('office_address');
-        $Client->client_code = $request->input('client_code');
-        $Client->office_phone = $request->input('office_phone');
-        $Client->gst_number = $request->input('gst_number');
-        $Client->pan_number = $request->input('pan_number');
-        $Client->adhar_number = $request->input('adhar_number');
-     
-        $Client->save();
+        $Users = ($request->input('id') > 0 ) ? Users::find($request->input('id')) : new Users;
+        $Users->first_name = $request->input('first_name');
+        $Users->last_name = $request->input('last_name');
+        $Users->email = $request->input('client_email');
+        $Users->password = bcrypt($request->input('client_password'));
+        $Users->mobile = $request->input('client_mobile');
+        $Users->user_type_id = $request->input('client_type');
+        $Users->ip_address = $request->ip();
+        $Users->p_id = 2;
+        $Users->status = 1;
+        $Users->save();
         if ($request->input('id') > 0) {
             return ['result' => true, 'message' => 'User updated successfully'];
         } else {
@@ -75,16 +64,16 @@ class UserService {
      * @param  int  $id
      * @return Response
      */
-     public function getUsers($id) {
-
+    public function getUsers($id) {
         if ($id != null) {
-            $users = Client::find($id);
+            $users = Users::find($id);
         } else {
-            $users = Client::all();
+           // $users = Users::all();
+            $users = Users:: where('p_id','2')->get();
         }
+       
         return ['data' => $users];
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -92,12 +81,11 @@ class UserService {
      * @param  int  $id
      * @return Response
      */
-    public function deleteUser($id) {
+    public function deleteUsers($id) {
         // delete
-        $client = Client::find($id);
-        $client->delete();
+        $users = Users::find($id);
+        $users->delete();
         return ['result' => true, 'message' => 'User deleted successfully'];
     }
 
-   
 }

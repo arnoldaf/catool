@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use Validator;
-use Auth;
-use App\User;
 use App\Client;
 
 class ClientService {
@@ -53,6 +51,7 @@ class ClientService {
         $Client->role_id = $request->input('role_id');
         $Client->user_type_id = $request->input('plan_type');
         $Client->ip_address = $request->ip();
+        $Client->p_id = 2;
         $Client->status = 1;
         $Client->address = $request->input('address');
         $Client->office_address = $request->input('office_address');
@@ -81,7 +80,8 @@ class ClientService {
         if ($id != null) {
             $users = Client::find($id);
         } else {
-            $users = Client::all();
+            //$users = Client::all();
+            $users = Client:: where('p_id', '1')->get();
         }
         return ['data' => $users];
     }
@@ -97,23 +97,6 @@ class ClientService {
         $client = Client::find($id);
         $client->delete();
         return ['result' => true, 'message' => 'User deleted successfully'];
-    }
-
-    public function updateClient($id, Request $request) {
-        $client = Client::findOrFail($id);
-        
-        $this->validate($request, [
-            'title' => 'required',
-            'description' => 'required'
-        ]);
-
-        $input = $request->all();
-
-        $task->fill($input)->save();
-
-        Session::flash('flash_message', 'Task successfully added!');
-
-        return redirect()->back();
     }
 
 }

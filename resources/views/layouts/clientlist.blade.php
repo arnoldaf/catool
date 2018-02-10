@@ -143,7 +143,7 @@ $(document).ready(function () {
                 'orderable': false,
                 'className': 'dt-body-center',
                 'render': function (data, type, full, meta) {
-                    return '<div class="btn-group"> <a  href="client/'+ full.id + '"><img height="20" width="20" title="EDIT" src="http://www.pvhc.net/img2/ssmdrdedzoranahwnojt.png"></a><a  href="javascript:void(0)"  onClick="deleteClient(' + full.id + ')"> <img height="20" width="20" title="DELETE" src="https://image.flaticon.com/icons/png/128/61/61391.png"></div>';
+                    return '<div> <a class="btn btn-small btn-info" href="client/' + full.id + '">EDIT</a></div><div><a  class ="btn btn-warning" href="javascript:void(0)" onClick="deleteClient(' + full.id + ')">DELETE</a></div>';
                 },
             },
         ]
