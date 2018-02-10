@@ -70,10 +70,10 @@ class LoginController extends Controller
             if (Auth::attempt(['id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {                
                 $loggedFlag = true;
             }
-            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {               
+            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {   
                 $loggedFlag = true;
             }
-            else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
+            elseif (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
                 $loggedFlag = true;
             }
         }

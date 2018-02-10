@@ -16,11 +16,20 @@ class VerifyClients
     public function handle($request, Closure $next)
     {
         //to get client from domain
-        $clientDomain = str_replace(['http://', 'https://'], '', $request->root());
-        $clientInfo = UserDomainConfig::where('domain_name', $clientDomain)->first();
+        $loggedIn = \Illuminate\Support\Facades\Auth::user();
+        if ($loggedIn && $loggedIn->role_id > 0) {
+            $pId = $loggedIn->p_id;
+            $clientDomain = str_replace(['http://', 'https://'], '', $request->root());
+           
+            $clientInfo = UserDomainConfig::whereIn('user_id', [$loggedIn->id, $pId])
+                                            ->where('domain_name', $clientDomain)
+                                            ->first();
+            if (!$clientInfo) {
+                abort(403);
+            }
+        }        
+        setMenu();
         
-        \Session::put('client','james');
-        \Session::save();
         return $next($request);
     }
 }

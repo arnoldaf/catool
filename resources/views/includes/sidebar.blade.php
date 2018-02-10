@@ -7,7 +7,21 @@
 <div class="sidebar-inner">
     <ul class="nav nav-sidebar">
         <li class=" nav-active active"><a href="#"><i class="icon-home"></i><span>Dashboard</span></a></li>
-        <li> <a href="#"><i class="icon-user"></i><span>My Profile</span></a></li>
+        @foreach(getMenu() as $menus)
+            @if(isset($menus['name']) && isset($menus['sub_menu']))
+            <li class="nav-parent">
+                <a href="#"><i class="{{$menus['icon_name']}}"></i><span>{{$menus['name']}}</span><span class="fa arrow"></span></a>
+                <ul class="children collapse">
+                    @foreach($menus['sub_menu'] as $submenu)
+                    <li><a href="{{$submenu['url']}}">{{$submenu['name']}} </a></li>
+                    @endforeach
+                </ul>
+            </li>
+            @elseif(isset($menus['name']))
+            <li> <a href="{{$menus['url']}}"><i class="{{$menus['icon_name']}}"></i><span>{{$menus['name']}}</span></a></li>
+            @endif
+        @endforeach
+        <!--<li> <a href="#"><i class="icon-user"></i><span>My Profile</span></a></li>
         <li class="nav-parent">
             <a href=""><i class="icon-note"></i><span>My Financials </span><span class="fa arrow"></span></a>
             <ul class="children collapse">
@@ -39,7 +53,7 @@
                 <li><a href="#"> New Request </a></li>
                 <li><a href="#"> Raise an Issue</a></li>
             </ul>
-        </li>
+        </li> -->
         <li>
             <a href="{{url('auth/logout')}}"><i class="icon-logout"></i><span>Logout</span></a>
         </li>
