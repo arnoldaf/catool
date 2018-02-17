@@ -81,6 +81,8 @@ class LoginController extends Controller
             $loggedFlag = true;
         }
         if ($loggedFlag) {
+            $activity = new \App\Services\ActivityService;
+            $activity->setActivity('reset_password', ['account' => 1], ['mailto' => '']);
             $user = Auth::user();
             $user->last_login = date('Y-m-d h:i:s');
             $user->is_login = 1;

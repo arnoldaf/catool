@@ -7,6 +7,8 @@ use App\ActivityLog;
 use App\EmailProfile;
 use App\EmailProfileIncoming;
 use App\EmailTemplate;
+use Auth;
+use App\Mail\PHPMailer;
 
 class ActivityService {
 
@@ -35,6 +37,8 @@ class ActivityService {
         $businessLog->activity_id = $activitySetting->id;
         $businessLog->user_id = Auth::id();
         $businessLog->ip = request()->ip();
+        $businessLog->activity_name = $name;
+        $businessLog->info = '';
         $businessLog->message = (isset($extra['message'])) ? $extra['message'] : '';
         $businessLog->save();
     }
@@ -46,7 +50,7 @@ class ActivityService {
      * @param EmailProfile $emailOutgoingSettings
      * @param type $extra
      */
-    public function sendMail($args, Activity $activitySetting, EmailProfile $emailOutgoingSettings, $extra) {
+    public function sendMail($args, Activity $activitySetting, EmailProfile $emailOutgoingSettings, $extra) {        
         $emailIncomingSettings = EmailProfileIncoming::find($activitySetting->incoming_id);
         $emailTemplateSettings = EmailTemplate::find($activitySetting->template_id);
         if ($emailTemplateSettings) {
@@ -57,7 +61,7 @@ class ActivityService {
                 $subject = str_replace("%{$argKey}%", $argVal, $subject);
             }
 
-            $mail = new \App\Mail\PHPMailer();
+            $mail = new PHPMailer();
             $mail->isSMTP(); // Set mailer to use SMTP
             $mail->isHTML(true);
             $mail->SMTPAuth = true; // Enable SMTP authentication
@@ -95,6 +99,10 @@ class ActivityService {
             if (!empty($emailIncomingSettings->emails)) {
                 $incomings = explode(",", $emailIncomingSettings->emails);
                 $recipents = array_merge($recipents, $incomings);
+            }
+            // Additional Email address
+            if (isset($extra['mailto'])) {
+                $recipents[] = $extra['mailto'];
             }
 
             foreach ($recipents as $recipent) {
