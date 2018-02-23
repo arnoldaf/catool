@@ -22,25 +22,23 @@
                 <!-- BEGIN PAGE CONTENT -->
                 <div class="page-content">
                     <div class="header">
-                        <h2>Email Template <strong>List</strong></h2>
+                        <h2>Email Template <strong>List</strong>&nbsp;
+                            <a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a></h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
-                                <li><a href="dashboard.html">Make</a>
+                                <li><a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a>
                                 </li>
-                                <li><a href="tables.html">Tables</a>
-                                </li>
-                                <li class="active">Tables Dynamic</li>
                             </ol>
                         </div>
                     </div>
-					<!-- will be used to show any messages -->
-					@if (Session::has('message'))
-						<div class="alert alert-info">{{ Session::get('message') }}</div>
-					@endif
+                    <!-- will be used to show any messages -->
+                    @if (Session::has('message'))
+                    <div class="alert alert-info">{{ Session::get('message') }}</div>
+                    @endif
                     <div class="row">
                         <div class="col-lg-12 portlets">
                             <div class="panel">
-                               
+
                                 <div class="panel-content pagination2 table-responsive">
                                     <table class="table table-hover table-dynamic">
                                         <thead>
@@ -49,42 +47,42 @@
                                                 <th>Subject</th>
                                                 <th>Body</th>
                                                 <th>Created At</th>
-												<th>Actions</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-											@foreach($emailtemplates as $key => $value)
+                                            @foreach($emailtemplates as $key => $value)
                                             <tr>
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->subject }}</td>
-                                                <td>{{ str_limit($value->body, $limit = 80, $end = '...') }}</td>
+                                                <td>{{ str_limit($value->body, $limit = 60, $end = '...') }}</td>
                                                 <td>{{ $value->created_at }}</td>
-												<!-- add show, edit, and delete buttons -->
-												<td>
-													<!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
-													<!-- we will add this later since its a little more complicated than the first two buttons -->
-													{{ Form::open(array('url' => 'emailtemplates/' . $value->id, 'class' => 'pull-right')) }}
-														{{ Form::hidden('_method', 'DELETE') }}
-														{{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
-													{{ Form::close() }}
+                                                <!-- add show, edit, and delete buttons -->
+                                                <td>
+                                                    <!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
+                                                    <!-- we will add this later since its a little more complicated than the first two buttons -->
+                                                    {{ Form::open(array('url' => '/admin/email-templates/' . $value->id, 'class' => 'pull-right')) }}
+                                                    {{ Form::hidden('_method', 'DELETE') }}
+                                                    {{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
+                                                    {{ Form::close() }}
 
-													<!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-													<a class="btn btn-small btn-success" href="{{ URL::to('emailtemplates/' . $value->id) }}">Show</a>
+                                                    <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
+                                                    <a class="btn btn-small btn-success" href="{{ URL::to('/admin/email-templates/' . $value->id) }}">Show</a>
 
-													<!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-													<a class="btn btn-small btn-info" href="{{ URL::to('emailtemplates/' . $value->id . '/edit') }}">Edit</a>
+                                                    <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
+                                                    <a class="btn btn-small btn-info" href="{{ URL::to('/admin/email-templates/' . $value->id . '/edit') }}">Edit</a>
 
-												</td>
+                                                </td>
                                             </tr>
-											@endforeach
-                                            
+                                            @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                  
+
                     <div class="footer">
                         <div class="copyright">
                             <p class="pull-left sm-pull-reset">
