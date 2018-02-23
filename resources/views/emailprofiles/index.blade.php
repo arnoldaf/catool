@@ -22,11 +22,11 @@
                 <!-- BEGIN PAGE CONTENT -->
                 <div class="page-content">
                     <div class="header">
-                        <h2>Email Template <strong>List</strong>&nbsp;
-                            <a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a></h2>
+                        <h2>Email Profile Setting <strong>List</strong>&nbsp;
+                            <a href="{{ URL::to('/admin/email-profiles/create') }}">Add New</a></h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
-                                <li><a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a>
+                                <li><a href="{{ URL::to('/admin/email-profiles/create') }}">Add New</a>
                                 </li>
                             </ol>
                         </div>
@@ -43,32 +43,38 @@
                                     <table class="table table-hover table-dynamic">
                                         <thead>
                                             <tr>
-                                                <th>Subject</th>
-                                                <th>Body</th>
-                                                <th>Created At</th>
-                                                <th>Actions</th>
+                                                <th>Name</th>
+                                                <th>Host</th>
+                                                <th>Port</th>
+                                                <th>Email</th>
+                                                <th>Password</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($emailtemplates as $key => $value)
+                                            @foreach($emailprofiles as $key => $value)
                                             <tr>
-                                                <td>{{ $value->subject }}</td>
-                                                <td>{{ str_limit($value->body, $limit = 60, $end = '...') }}</td>
-                                                <td>{{ $value->created_at }}</td>
+                                                <td>{{ $value->name }}</td>
+                                                <td>{{ $value->host }}</td>
+                                                <td>{{ $value->port }}</td>
+                                                <td>{{ $value->email }}</td>
+                                                <td>{{ $value->password }}</td>
+                                                <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
                                                 <!-- add show, edit, and delete buttons -->
                                                 <td>
                                                     <!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
                                                     <!-- we will add this later since its a little more complicated than the first two buttons -->
-                                                    {{ Form::open(array('url' => '/admin/email-templates/' . $value->id, 'class' => 'pull-right')) }}
+                                                    {{ Form::open(array('url' => '/admin/email-profiles/' . $value->id, 'class' => 'pull-right')) }}
                                                     {{ Form::hidden('_method', 'DELETE') }}
                                                     {{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
                                                     {{ Form::close() }}
 
                                                     <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-                                                    <a class="btn btn-small btn-success" href="{{ URL::to('/admin/email-templates/' . $value->id) }}">Show</a>
+                                                    <a class="btn btn-small btn-success" href="{{ URL::to('/admin/email-profiles/' . $value->id) }}">Show</a>
 
                                                     <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-                                                    <a class="btn btn-small btn-info" href="{{ URL::to('/admin/email-templates/' . $value->id . '/edit') }}">Edit</a>
+                                                    <a class="btn btn-small btn-info" href="{{ URL::to('/admin/email-profiles/' . $value->id . '/edit') }}">Edit</a>
 
                                                 </td>
                                             </tr>

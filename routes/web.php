@@ -37,6 +37,7 @@ Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
 //Route::post('/updateClient', 'ClientController@updateClient');
 
 Route::resource('/admin/email-templates', 'EmailTemplateController');
+Route::resource('/admin/email-profiles', 'EmailProfileController');
 
 Auth::routes();
 

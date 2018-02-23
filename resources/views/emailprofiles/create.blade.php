@@ -22,17 +22,16 @@
                 <!-- BEGIN PAGE CONTENT -->
                 <div class="page-content">
                     <div class="header">
-                        <h2>Email Templates </h2>
+                        <h2>Email Profile </h2>
+
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 portlets">
                             <div class="panel">
                                 <div class="panel-header panel-controls">
-                                    <h3><i class="icon-note"></i> <strong>Edit</strong> Email Templates</h3>
+                                    <h3><i class="icon-note"></i> <strong>Add</strong> Email Profile</h3>
                                 </div>
-
-                                <!-- if there are creation errors, they will show here -->
                                 @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul style="list-style-type: none">
@@ -42,32 +41,53 @@
                                     </ul>
                                 </div>
                                 @endif
-                                {{ Form::model($emailtemplate, array('route' => array('email-templates.update', $emailtemplate->id), 'method' => 'PUT')) }}
+                                @if(Session::has('message'))
+                                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                                @endif
+
+                                {{ Form::open(array('url'=>'admin/email-profiles')) }}
+
                                 <div class="panel-content">
 
                                     <div class="row">
-                                        <div class="col-md-9" >
-                                            <h3> <strong>Subject</strong></h3>
-
-                                            {{ Form::text('subject', isset($emailtemplate['subject'])? $emailtemplate['subject'] : '',array('id'=>'','class'=>'form-control form-white','placeholder'=>'Email Template Subject')) }}
-                                            {{ Form::hidden('id', isset($emailtemplate['id'])? $emailtemplate['id'] : '',array('id'=>'','class'=>'form-control ')) }}
-
-                                            <!--								
-                                              <input style="width:400px;" name="subject" class="form-control form-white" type="text" placeholder="Email Template Subject">-->
+                                        <div class="col-md-6">
+                                            <h3> <strong>Name</strong></h3>
+                                            {{ Form::text('name', '',array('id'=>'', 'required' => 'required', 'class'=>'form-control form-white','placeholder'=>'Name')) }}
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <h3> <strong>Host</strong></h3>
+                                            {{ Form::text('host', '',array('id'=>'', 'required' => 'required', 'class'=>'form-control form-white','placeholder'=>'Host Name')) }}
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <h3> <strong>Port</strong></h3>
+                                            {{ Form::text('port', '',array('id'=>'', 'maxlength'=> '4', 'required' => 'required', 'class'=>'form-control form-white','placeholder'=>'Port')) }}
                                         </div>
 
-                                        <div class="col-md-9">
-                                            <h3>Email Template <strong>Body</strong></h3>
-                                            <!--<textarea class="summernote" name="body"></textarea>-->
-                                            {{ Form::textarea('body', isset($emailtemplate['body'])? $emailtemplate['body'] : '',array('id'=>'','class'=>'summernote','placeholder'=>'Email Template Body')) }}
-
+                                        <div class="col-md-6">
+                                            <h3><strong>Email</strong></h3>
+                                             {{ Form::text('email', '',array('id'=>'', 'required' => 'required', 'class'=>'form-control form-white','placeholder'=>'Email')) }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h3><strong>Password</strong></h3>
+                                             {{ Form::text('password', '',array('id'=>'', 'required' => 'required', 'class'=>'form-control form-white','placeholder'=>'Password')) }}
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <h3><strong>Status</strong></h3>
+                                            <select name="status" class="form-control form-white"> 
+                                                <option value="1"> Active </option>
+                                                <option value="0"> Inactive </option>
+                                                
+                                            </select>
                                         </div>
 
                                         <div class="col-sm-9 col-sm-offset-3">
                                             <div class="pull-left">
                                                 <p>&nbsp;</p>
                                                 <button type="submit" class="btn btn-embossed btn-primary m-r-20">Save</button>
-                                                <a href="{{ URL::to('/admin/email-templates') }}"><button type="button" class="cancel btn btn-embossed btn-default m-b-10 m-r-0">Cancel</button></a>
+                                                <button type="reset" class="cancel btn btn-embossed btn-default m-b-10 m-r-0">Cancel</button>
                                             </div>
                                         </div>
 
@@ -111,8 +131,7 @@
         <script src="{{URL::asset('assets/global/plugins/cke-editor/ckeditor.js')}}"></script> <!-- Advanced HTML Editor -->
         <script src="{{URL::asset('assets/global/plugins/typed/typed.min.js')}}"></script> <!-- Animated Typing -->
         <script src="{{URL::asset('/assets/global/js/pages/editor.js')}}"></script>
-
-
+       
         <!-- END PAGE SCRIPTS -->
 
     </body>
