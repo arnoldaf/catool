@@ -6,7 +6,7 @@
 </div>
 <div class="sidebar-inner">
     <ul class="nav nav-sidebar">
-        <li class=" nav-active active"><a href="#"><i class="icon-home"></i><span>Dashboard</span></a></li>
+        <li class=" nav-active active"><a href="{{url('/dashboard')}}"><i class="icon-home"></i><span>Dashboard</span></a></li>
         @foreach(getMenu() as $menus)
             @if(isset($menus['name']) && isset($menus['sub_menu']))
             <li class="nav-parent">

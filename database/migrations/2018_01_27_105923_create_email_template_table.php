@@ -20,7 +20,7 @@ class CreateEmailTemplateTable extends Migration
         }
         Schema::create($this->tbl, function (Blueprint $table) {
             $table->increments('id');
-            $table->string('to');
+            $table->string('to')->nullable(true);
             $table->string('cc')->nullable(true);
             $table->string('bcc')->nullable(true);
             $table->string('subject');

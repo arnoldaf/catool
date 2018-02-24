@@ -23,49 +23,61 @@
                 <div class="page-content">
                     <div class="header">
                         <h2>Email Templates </h2>
-                       
+
                     </div>
-                    
-					<div class="row">
-						<div class="col-md-12 portlets">
-						  <div class="panel">
-							<div class="panel-header panel-controls">
-							  <h3><i class="icon-note"></i> <strong>Add</strong> Email Templates</h3>
-							</div>
-							
-							 {{ Form::open(array('url'=>'emailtemplates')) }}
-							 
-							<div class="panel-content">
-															
-							  <div class="row">
-								<div class="col-md-9">
-								  <h3> <strong>Subject</strong></h3>
-								  <input style="width:400px;" class="form-control form-white" type="text" placeholder="Email Template Subject">
-								</div>
-								
-								<div class="col-md-6">
-								  <h3>Email Template <strong>Body</strong></h3>
-								  <div class="summernote"></div>
-								</div>
-								
-								<div class="col-sm-9 col-sm-offset-3">
-									<div class="pull-left">
-									<p>&nbsp;</p>
-									  <button type="submit" class="btn btn-embossed btn-primary m-r-20">Save</button>
-									  <button type="reset" class="cancel btn btn-embossed btn-default m-b-10 m-r-0">Cancel</button>
-									</div>
-								  </div>
-						  
-								
-							  </div>
-							</div>
-							{{ Form::close() }}
-							
-						  </div>
-						</div>
-					  </div>
-		  
-		  
+
+                    <div class="row">
+                        <div class="col-md-12 portlets">
+                            <div class="panel">
+                                <div class="panel-header panel-controls">
+                                    <h3><i class="icon-note"></i> <strong>Add</strong> Email Templates</h3>
+                                </div>
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul style="list-style-type: none">
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+                                @if(Session::has('message'))
+                                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                                @endif
+
+                                {{ Form::open(array('url'=>'admin/email-templates')) }}
+
+                                <div class="panel-content">
+
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <h3> <strong>Subject</strong></h3>
+                                            <input name="subject" class="form-control form-white" type="text" placeholder="Email Template Subject">
+                                        </div>
+
+                                        <div class="col-md-9">
+                                            <h3>Email Template <strong>Body</strong></h3>
+                                             <textarea name="body" class="summernote" title="Contents"></textarea>
+                                        </div>
+
+                                        <div class="col-sm-9 col-sm-offset-3">
+                                            <div class="pull-left">
+                                                <p>&nbsp;</p>
+                                                <button type="submit" class="btn btn-embossed btn-primary m-r-20">Save</button>
+                                                <button type="reset" class="cancel btn btn-embossed btn-default m-b-10 m-r-0">Cancel</button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                {{ Form::close() }}
+
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="footer">
                         <div class="copyright">
                             <p class="pull-left sm-pull-reset">
@@ -91,14 +103,13 @@
         <script src="{{URL::asset('assets/global/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
         <script src="{{URL::asset('assets/global/js/pages/table_dynamic.js')}}"></script>
         <!-- END PAGE SCRIPTS -->
-		<!-- BEGIN PAGE SCRIPTS -->
-		<script src="{{URL::asset('assets/global/plugins/summernote/summernote.min.js')}}"></script> <!-- Simple HTML Editor -->
-		<script src="{{URL::asset('assets/global/plugins/cke-editor/ckeditor.js')}}"></script> <!-- Advanced HTML Editor -->
-		<script src="{{URL::asset('assets/global/plugins/typed/typed.min.js')}}"></script> <!-- Animated Typing -->
-		<script src="{{URL::asset('/assets/global/js/pages/editor.js')}}"></script>
-		
-		
-		<!-- END PAGE SCRIPTS -->
-	
+        <!-- BEGIN PAGE SCRIPTS -->
+        <script src="{{URL::asset('assets/global/plugins/summernote/summernote.min.js')}}"></script> <!-- Simple HTML Editor -->
+        <script src="{{URL::asset('assets/global/plugins/cke-editor/ckeditor.js')}}"></script> <!-- Advanced HTML Editor -->
+        <script src="{{URL::asset('assets/global/plugins/typed/typed.min.js')}}"></script> <!-- Animated Typing -->
+        <script src="{{URL::asset('/assets/global/js/pages/editor.js')}}"></script>
+       
+        <!-- END PAGE SCRIPTS -->
+
     </body>
 </html>

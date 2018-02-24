@@ -25,7 +25,8 @@
                 <ul>
                     <li><i class="fa fa-database"></i>Data Security</li>     
                     <li><i class="icon-layers"></i>Bills Management</li>
-                    <li><i class="icon-credit-card"></i>Payment Gateway</li>                    
+                    <li><i class="icon-credit-card"></i>Payment Gateway</li>  
+                    <li><i class="fa fa-cloud-upload"></i>Tally Cloud Backup</li>  
                     <li><i class="icon-lock"></i>Financial Digital Locker</li>
                     <li><i class="icon-envelope-letter"></i>SMS and Email Notification</li>
                     <li></li>

@@ -1,32 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Services\EmailTemplateService;
 use Illuminate\Support\Facades\View;
 use App\EmailTemplate;
-
+use Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class EmailTemplateController extends Controller {
+    /*
+      public function create()
+      {
+      return view('emailtemplates.create');
+      }
+     */
 
-	/*
-	public function create()
-		{
-			return view('emailtemplates.create');
-		}
-	*/
-		
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
-    {
-		$emailtemplates = (new EmailTemplateService)->getEmailTemplates();
-		// load the view and pass the email templates
+    public function index() {
+        $emailtemplates = (new EmailTemplateService)->getEmailTemplates();
+
         return View::make('emailtemplates.index')
-            ->with('emailtemplates', $emailtemplates);
+                        ->with('emailtemplates', $emailtemplates);
     }
 
     /**
@@ -34,9 +36,7 @@ class EmailTemplateController extends Controller {
      *
      * @return Response
      */
-    public function create()
-    {
-        // load the create form (app/views/emailtemplates/create.blade.php)
+    public function create() {
         return View::make('emailtemplates.create');
     }
 
@@ -45,31 +45,24 @@ class EmailTemplateController extends Controller {
      *
      * @return Response
      */
-    public function store()
-    {
-        // validate
-		// read more on validation at http://laravel.com/docs/validation
-		$rules = array(
-			'subject'       => 'required',
-			'body'      => 'required|email',
-		);
-		$validator = Validator::make(Input::all(), $rules);
+    public function store(Request $request) {
+        $rules = array(
+            'subject' => 'required',
+            'body' => 'required',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            //Session::flash('message', implode("<br>", $validator->errors()->all()));
+            //Session::flash('alert-class', 'alert-danger');
+            return Redirect::to('admin/email-templates/create')->withErrors($validator);;
+        }
+        $nerd = new EmailTemplate;
+        $nerd->subject = $request->subject;
+        $nerd->body = $request->body;
+        $nerd->save();
+        Session::flash('message', 'Successfully created email template!');
 
-		// process the login
-		if ($validator->fails()) {
-			return Redirect::to('emailtemplates/create')
-				->withErrors($validator);
-		} else {
-			// store
-			$nerd = new EmailTemplate;
-			$nerd->subject       = Input::get('subject');
-			$nerd->body      = Input::get('body');
-			$nerd->save();
-
-			// redirect
-			Session::flash('message', 'Successfully created email template!');
-			return Redirect::to('emailtemplate');
-		}
+        return Redirect::to('admin/email-templates');
     }
 
     /**
@@ -78,13 +71,11 @@ class EmailTemplateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    {
-        // get the emailtemplate
-		$emailtemplate = EmailTemplate::find($id);
-		// show the view and pass the emailtemplate to it
-		return View::make('emailtemplates.show')
-			->with('emailtemplate', $emailtemplate);
+    public function show($id) {
+        $emailtemplate = EmailTemplate::find($id);
+
+        return View::make('emailtemplates.show')
+                        ->with('emailtemplate', $emailtemplate);
     }
 
     /**
@@ -93,14 +84,13 @@ class EmailTemplateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         // get the nerd
-		$emailtemplate = EmailTemplate::find($id);
+        $emailtemplate = EmailTemplate::find($id);
 
-		// show the edit form and pass the nerd
-		return View::make('emailtemplate.edit')
-			->with('emailtemplate', $emailtemplate);
+        // show the edit form and pass the nerd
+        return View::make('emailtemplates.edit')
+                        ->with('emailtemplate', $emailtemplate);
     }
 
     /**
@@ -109,31 +99,23 @@ class EmailTemplateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
-    {
-        		// validate
-		// read more on validation at http://laravel.com/docs/validation
-		$rules = array(
-			'subject'       => 'required',
-			'body'      => 'required'
-		);
-		$validator = Validator::make(Input::all(), $rules);
-
-		// process the login
-		if ($validator->fails()) {
-			return Redirect::to('emailtemplates/' . $id . '/edit')
-				->withErrors($validator);
-		} else {
-			// store
-			$nerd = EmailTemplate::find($id);
-			$nerd->name       = Input::get('subject');
-			$nerd->email      = Input::get('body');
-			$nerd->save();
-
-			// redirect
-			Session::flash('message', 'Successfully updated email template!');
-			return Redirect::to('emailtemplate');
-		}
+    public function update($id) {
+        $rules = array(
+            'subject' => 'required',
+            'body' => 'required'
+        );
+        $validator = Validator::make(Input::all(), $rules);
+        if ($validator->fails()) {
+            return Redirect::to('admin/email-templates/' . $id . '/edit')
+                            ->withErrors($validator);
+        }
+        $nerd = EmailTemplate::find($id);
+        $nerd->subject = Input::get('subject');
+        $nerd->body = Input::get('body');
+        $nerd->save();
+        Session::flash('message', 'Successfully updated email template!');
+        
+        return Redirect::to('admin/email-templates');
     }
 
     /**
@@ -142,16 +124,13 @@ class EmailTemplateController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
-    {
-        // delete
-		$nerd = EmailTemplate::find($id);
-		$nerd->delete();
-
-		// redirect
-		Session::flash('message', 'Successfully deleted the email template!');
-		return Redirect::to('emailtemplates');
+    public function destroy($id) {
+        $nerd = EmailTemplate::find($id);
+        $nerd->delete();
+        Session::flash('message', 'Successfully deleted the email template!');
+        return Redirect::to('admin/email-templates');
     }
 
 }
+
 ?>
