@@ -4,50 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\Client;
+use Illuminate\Support\Facades\View;
+use App\Users;
 
 class UserController extends Controller {
-    /* public function index() {
-      return view('layouts.client');
-      }
-
-     * 
-     */
 
     public function index($id = null) {
         $users = [];
         if ($id != null) {
-            //$users = (new ClientService)->getClients($id);
-            $users = Client::find($id)->toArray();
+            $users = Users::find($id)->toArray();
+            return view('layouts.userprofile')->with('user', $users);
         }
-       
-
-        return view('layouts.user')->with('user', $users);
-
-        //return View::make('customers.edit')->with('customer', $customer);
+        else{
+       // return view('layouts.user')->with('user', $users);
+         return View::make('layouts.user')
+                        ->with('users', $users);
+        }
     }
 
     public function indexlist() {
-        return view('layouts.userlist');
+        
+        $users = [];
+        $users = (new UserService)->getUsers($id=null);
+         return View::make('layouts.users')
+                        ->with('usersdata', $users);
     }
 
-    public function getUser() {
-        $data = (new Example)->getUsersData();
-        return view('welcome', $data);
-    }
-
-    public function createUser(Request $request) {
-        $data = (new UserService)->createUser($request);
+    public function createUsers(Request $request) {
+        $data = (new UserService)->createUsers($request);
         return response()->json($data);
     }
 
     public function getUsers($id = null) {
-        $data = (new UserService)->getClients($id);
+        $data = (new UserService)->getUsers($id);
         return response()->json($data);
     }
 
-    public function deleteClient($id = null) {
-        $data = (new UserService)->deleteClient($id);
+    public function deleteUsers($id = null) {
+        $data = (new UserService)->deleteUsers($id);
         return response()->json($data);
     }
 

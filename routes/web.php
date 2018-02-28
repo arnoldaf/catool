@@ -19,20 +19,19 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::get('/caprofile', 'CaController@indexcaprofile');
 Route::get('/ca', 'CaController@indexca');
 
-Route::get('/client/{id?}', 'ClientController@index');
 Route::get('/user/{id?}', 'UserController@index');
-
-Route::get('/clientlist', 'ClientController@indexlist');
-Route::get('/userlist', 'UserController@indexlist');
-
-Route::post('/createClient', 'ClientController@createClient');
+Route::get('/users', 'UserController@indexlist');
 Route::post('/createUsers', 'UserController@createUsers');
-
-Route::get('/getClients/{id?}', 'ClientController@getClients');
 Route::get('/getUsers/{id?}', 'UserController@getUsers');
+//Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
 
+Route::get('/client/{id?}', 'ClientController@index');
+Route::get('/clients', 'ClientController@indexlist');
+Route::post('/createClient', 'ClientController@createClient');
+Route::get('/getClients/{id?}', 'ClientController@getClients');
 Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
-Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
+
+//Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
 
 //Route::post('/updateClient', 'ClientController@updateClient');
 

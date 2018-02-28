@@ -37,8 +37,7 @@
                                                     <div class="alert media fade in alert-danger">
                                                     </div>
                                                 </div>
-												
-
+                                               
                                                 {{ Form::open(array('url'=>'form-submit')) }}
                                                 <fieldset>
                                                     <legend>Basic</legend>
@@ -69,7 +68,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Client Code</label>
-                                                                {{ Form::text('client_code','CA-MYCA218',array('id'=>'','class'=>'form-control','placeholder'=>'Enter Client Code')) }}
+                                                                {{ Form::text('client_code',isset($user['client_code'])? $user['client_code'] : 'MY-101-1001',array('id'=>'','class'=>'form-control','placeholder'=>'MY-101-1001')) }}
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleInput">Email</label>
