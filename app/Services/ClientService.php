@@ -18,10 +18,42 @@ class ClientService {
 
         $validator = Validator::make($request->all(), [
                     'first_name' => 'required|max:255',
+                    'last_name' => 'required|max:255',
+                    'client_code' => 'required|max:100|unique:users,client_code,' . $request->input('id'),
                     'client_email' => 'required|email|max:255|unique:users,email,' . $request->input('id'),
+                    'client_mobile' => 'required|max:10|unique:users,mobile,' . $request->input('id'),
+                    'url' => 'required|url|max:255|unique:users,url,' . $request->input('id'),
+                    'client_password' => 'required|min:6',
+                    'confirm_password' => 'required_with:client_password|same:client_password|min:6',
+                    'phone' => 'required|max:255',
+                    'personal_email' => 'required|max:255',
+                    'address' => 'required|max:255',
+                    'zipcode' => 'required|max:6',
+                    'office_address' => 'required|max:255',
+                    'office_phone' => 'required|max:255',
+                    'gst_number' => 'required|max:255',
+                    'pan_number' => 'required|max:255',
+                    'adhar_number' => 'required|max:255',
+                    'brand_name' => 'required|max:100|unique:users,brand_name,' . $request->input('id'),
                         ], [
-                    'name.required' => 'Name is required.',
+                    'first_name.required' => 'First Name is required.',
+                    'last_name.required' => 'Last Name is required.',
+                    'client_code.required' => 'Code is required.',
                     'client_email.required' => 'We need to know your e-mail address!',
+                    'client_mobile.required' => 'We need to know your mobile!',
+                    'url.required' => 'URL is required!',
+                    'client_password.required' => 'Password is required!',
+                    'confirm_password.required' => 'Confirm Password must be same as password!',
+                    'phone.required' => 'Phone is required!',
+                    'personal_email.required' => 'Personal Email is required!',
+                    'address.required' => 'Address is required!',
+                    'zipcode.required' => 'ZIPCODE is required!',
+                    'office_address.required' => 'Office Address is required!',
+                    'office_phone.required' => 'Office Phone is required!',
+                    'gst_number.required' => 'GST Number is required!',
+                    'pan_number.required' => 'PAN is required!',
+                    'adhar_number.required' => 'Adhar is required!',
+                    'brand_name.required' => 'Brand Name is required!',
                         ]
         );
 
@@ -48,10 +80,10 @@ class ClientService {
         $Client->personal_email = $request->input('personal_email');
         $Client->brand_name = $request->input('brand_name');
         $Client->user_type_id = $request->input('client_type');
-        $Client->role_id = $request->input('role_id');
+        $Client->role_id = 1;
         $Client->user_type_id = $request->input('plan_type');
         $Client->ip_address = $request->ip();
-        $Client->p_id = 2;
+        $Client->p_id = 0;
         $Client->status = 1;
         $Client->address = $request->input('address');
         $Client->office_address = $request->input('office_address');
@@ -81,7 +113,7 @@ class ClientService {
             $users = Client::find($id);
         } else {
             //$users = Client::all();
-            $users = Client:: where('p_id', '1')->get();
+            $users = Client:: where('role_id', '1')->get();
         }
         return ['data' => $users];
     }
