@@ -19,8 +19,18 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::get('/caprofile', 'CaController@indexcaprofile');
 Route::get('/ca', 'CaController@indexca');
 
+ Route::get('/users', 'UserController@indexlist');       
+Route::get('/client/{id?}', 'ClientController@index');
 Route::get('/user/{id?}', 'UserController@index');
-Route::get('/users', 'UserController@indexlist');
+
+Route::post('/auth/authenticate', 'Auth\LoginController@postLoginAuth');
+Route::get('/auth/verify', 'Auth\LoginController@verify');
+
+Route::get('/clientlist', 'ClientController@indexlist');
+Route::get('/userlist', 'UserController@indexlist');
+
+Route::post('/createClient', 'ClientController@createClient');
+
 Route::post('/createUsers', 'UserController@createUsers');
 Route::get('/getUsers/{id?}', 'UserController@getUsers');
 //Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
@@ -35,10 +45,12 @@ Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
 
 //Route::post('/updateClient', 'ClientController@updateClient');
 
+/*
 Route::resource('/admin/email-templates', 'EmailTemplateController');
 Route::resource('/admin/email-profiles', 'EmailProfileController');
-
+*/
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -55,4 +67,3 @@ Route::post('ajaxImageUpload', ['as'=>'ajaxImageUpload','uses'=>'AjaxImageUpload
 
 
 Route::resource('documentmaster', 'DocumentMasterController');
-
