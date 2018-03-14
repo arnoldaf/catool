@@ -13,7 +13,6 @@ class UserService {
      * @return Response
      */
     public function createUsers($request) {
-
         $messges = [];
         $validator = Validator::make($request->all(), [
                     'first_name' => 'required|max:255',
@@ -49,6 +48,7 @@ class UserService {
         $Users->user_type_id = $request->input('client_type');
         $Users->ip_address = $request->ip();
         $Users->p_id = 2;
+        $Users->role_id = 1;
         $Users->status = 1;
         $Users->save();
         if ($request->input('id') > 0) {
@@ -68,11 +68,11 @@ class UserService {
         if ($id != null) {
             $users = Users::find($id);
         } else {
-           // $users = Users::all();
-            $users = Users:: where('p_id','2')->get();
+            // $users = Users::all();
+            $users = Users:: where('role_id', '2')->get();
         }
-       
-        return ['data' => $users];
+        
+        return $users;
     }
 
     /**

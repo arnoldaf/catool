@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -16,21 +17,9 @@ Route::get('/auth/login', 'Auth\LoginController@getLogin');
 Route::post('/auth/login', 'Auth\LoginController@postLogin');
 Route::any('/auth/logout', 'Auth\LoginController@logout');
 Route::get('/dashboard', 'DashboardController@index');
-Route::get('/caprofile', 'CaController@indexcaprofile');
-Route::get('/ca', 'CaController@indexca');
 
- Route::get('/users', 'UserController@indexlist');       
-Route::get('/client/{id?}', 'ClientController@index');
 Route::get('/user/{id?}', 'UserController@index');
-
-Route::post('/auth/authenticate', 'Auth\LoginController@postLoginAuth');
-Route::get('/auth/verify', 'Auth\LoginController@verify');
-
-Route::get('/clientlist', 'ClientController@indexlist');
-Route::get('/userlist', 'UserController@indexlist');
-
-Route::post('/createClient', 'ClientController@createClient');
-
+Route::get('/users', 'UserController@indexlist');
 Route::post('/createUsers', 'UserController@createUsers');
 Route::get('/getUsers/{id?}', 'UserController@getUsers');
 //Route::get('/deleteUsers/{id}', 'UserController@deleteUsers');
@@ -45,25 +34,20 @@ Route::get('/deleteClient/{id}', 'ClientController@deleteClient');
 
 //Route::post('/updateClient', 'ClientController@updateClient');
 
-/*
-Route::resource('/admin/email-templates', 'EmailTemplateController');
-Route::resource('/admin/email-profiles', 'EmailProfileController');
-*/
-Auth::routes();
+Route::resource('emailtemplates', 'EmailTemplateController');
 
+Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('/createEnquiry', 'EnquiryController@createEnquiry');
 
-Route::get('/db-test', function() {
-   if(DB::connection()->getDatabaseName())
-   {
-      echo "conncted sucessfully to database ".DB::connection()->getDatabaseName();
-   }
-});
+Route::get('/roles/{id?}', 'RolesController@roles');
+Route::get('/rolePerm/{id?}', 'RolesController@rolePerm');
+Route::post('/createRole', 'RolesController@createRole');
+Route::post('/createRolePerm', 'RolesController@createRolePerm');
+Route::get('/deleteRolePerm/{id}', 'RolesController@deleteRolePerm');
+Route::get('/menu/{id?}', 'RolesController@menu');
+Route::post('/createMenu', 'RolesController@createMenu');
+Route::get('/deleteMenu/{id}', 'RolesController@deleteMenu');
 
-Route::get('document-upload', ['uses'=>'AjaxImageUploadController@ajaxImageUpload']);
-Route::post('ajaxImageUpload', ['as'=>'ajaxImageUpload','uses'=>'AjaxImageUploadController@ajaxImageUploadPost']);
-
-
-Route::resource('documentmaster', 'DocumentMasterController');

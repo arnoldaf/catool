@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,12 +23,14 @@
                 <!-- BEGIN PAGE CONTENT -->
                 <div class="page-content">
                     <div class="header">
-                        <h2>Email Template <strong>List</strong>&nbsp;
-                            <a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a></h2>
+                        <h2>Email Template <strong>List</strong></h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
-                                <li><a href="{{ URL::to('/admin/email-templates/create') }}">Add New</a>
+                                <li><a href="dashboard.html">Make</a>
                                 </li>
+                                <li><a href="tables.html">Tables</a>
+                                </li>
+                                <li class="active">Tables Dynamic</li>
                             </ol>
                         </div>
                     </div>
@@ -43,6 +46,7 @@
                                     <table class="table table-hover table-dynamic">
                                         <thead>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Subject</th>
                                                 <th>Body</th>
                                                 <th>Created At</th>
@@ -52,23 +56,24 @@
                                         <tbody>
                                             @foreach($emailtemplates as $key => $value)
                                             <tr>
+                                                <td>{{ $value->id }}</td>
                                                 <td>{{ $value->subject }}</td>
-                                                <td>{{ str_limit($value->body, $limit = 60, $end = '...') }}</td>
+                                                <td>{{ str_limit($value->body, $limit = 80, $end = '...') }}</td>
                                                 <td>{{ $value->created_at }}</td>
                                                 <!-- add show, edit, and delete buttons -->
                                                 <td>
                                                     <!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
                                                     <!-- we will add this later since its a little more complicated than the first two buttons -->
-                                                    {{ Form::open(array('url' => '/admin/email-templates/' . $value->id, 'class' => 'pull-right')) }}
+                                                    {{ Form::open(array('url' => 'emailtemplates/' . $value->id, 'class' => 'pull-right')) }}
                                                     {{ Form::hidden('_method', 'DELETE') }}
                                                     {{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
                                                     {{ Form::close() }}
 
                                                     <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-                                                    <a class="btn btn-small btn-success" href="{{ URL::to('/admin/email-templates/' . $value->id) }}">Show</a>
+                                                    <a class="btn btn-small btn-success" href="{{ URL::to('emailtemplates/' . $value->id) }}">Show</a>
 
                                                     <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-                                                    <a class="btn btn-small btn-info" href="{{ URL::to('/admin/email-templates/' . $value->id . '/edit') }}">Edit</a>
+                                                    <a class="btn btn-small btn-info" href="{{ URL::to('emailtemplates/' . $value->id . '/edit') }}">Edit</a>
 
                                                 </td>
                                             </tr>
@@ -107,4 +112,5 @@
         <script src="{{URL::asset('assets/global/js/pages/table_dynamic.js')}}"></script>
         <!-- END PAGE SCRIPTS -->
     </body>
+
 </html>

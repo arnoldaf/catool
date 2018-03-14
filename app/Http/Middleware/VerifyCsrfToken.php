@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Middleware;
@@ -14,7 +15,11 @@ class VerifyCsrfToken extends BaseVerifier {
     protected $except = [
         'createClient',
         'createUsers',
-       
+        'createEnquiry',
+        'createRole',
+        'createRolePerm',
+        'createMenu',
     ];
 
 }
+
