@@ -44,5 +44,15 @@ class UserController extends Controller {
         $data = (new UserService)->deleteUsers($id);
         return response()->json($data);
     }
+	
+	 public function updatePassword(Request $request) {
+        $data = (new UserService)->updatePassword($request);
+        return response()->json($data);
+    }
+    
+    public function forgotPassword(Request $request) {
+        $data = (new UserService)->forgotPassword($request);
+        return response()->json($data);
+    }
 
 }

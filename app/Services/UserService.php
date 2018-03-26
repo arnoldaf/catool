@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Validator;
 use App\Users;
+use DB;
 
 class UserService {
 
@@ -86,6 +87,68 @@ class UserService {
         $users = Users::find($id);
         $users->delete();
         return ['result' => true, 'message' => 'User deleted successfully'];
+    }
+	
+	public function forgotPassword($request) {
+        $messges = [];
+        $validator = Validator::make($request->all(), [
+                    'email' => 'required|email|max:255,email'
+                        ], [
+                    'email.required' => 'Email is required!',
+                        ]
+        );
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+                $messges[] = $value[0];
+            }
+            return ['result' => false, 'message' => implode("<br>", $messges)];
+        }
+        $email = $request->email;
+        $count = Users::where('email', '=', $email)->count();
+
+        if ($count > 0) {
+            $roles = Users::where('email', '=', $email)->first();
+            $user = $roles->first_name;
+            $key = bcrypt(time() . rand(5, 15));
+
+            DB::table('users')->where('email', $email)->update(['forgot_token' => $key]);
+
+            $url = "http://ca1.mycatool.com/#/login?recoveryToken=" . $key;
+
+            $activity = new \App\Services\ActivityService;
+            $activity->setActivity('reset_password', ['user_name' => $user . $url], ['mailto' => $email]);
+            return ['result' => true, 'message' => 'Email Available'];
+        } else {
+            return ['result' => true, 'message' => 'Email Not Available'];
+        }
+    }
+	
+	 public function updatePassword($request) {
+        $messges = [];
+        $validator = Validator::make($request->all(), [
+                    'password' => 'required|min:6',
+                    'confirm_password' => 'required_with:password|same:password|min:6',
+                        ], [
+                    'password.required' => 'Password is required!',
+                    'confirm_password.required' => 'Confirm Password must be same as password!',
+                        ]
+        );
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+                $messges[] = $value[0];
+            }
+            return ['result' => false, 'message' => implode("<br>", $messges)];
+        }
+        $token = $request->input('forgot_token');
+        $count = Users::where('forgot_token', '=', $token)->count();
+       
+        if ($count > 0) {
+            DB::table('users')->where('forgot_token', $token)->update(['password' => 'ghh'] );
+            DB::table('users')->where('forgot_token', $token)->update(['forgot_token' => ''] );
+            return ['result' => true, 'message' => 'Password updated successfully'];
+        }
     }
 
 }

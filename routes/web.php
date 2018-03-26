@@ -51,3 +51,6 @@ Route::get('/menu/{id?}', 'RolesController@menu');
 Route::post('/createMenu', 'RolesController@createMenu');
 Route::get('/deleteMenu/{id}', 'RolesController@deleteMenu');
 
+Route::post('/updatePassword', 'UserController@updatePassword');
+Route::post('/forgotPassword', 'UserController@forgotPassword');
+
