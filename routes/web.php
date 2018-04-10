@@ -54,3 +54,8 @@ Route::get('/deleteMenu/{id}', 'RolesController@deleteMenu');
 Route::post('/updatePassword', 'UserController@updatePassword');
 Route::post('/forgotPassword', 'UserController@forgotPassword');
 
+Route::get('/plans/{id?}', 'BillingPlanController@plans');
+Route::post('/createPlan', 'BillingPlanController@createPlan');
+Route::get('/deletePlan/{id}', 'BillingPlanController@deletePlan');
+Route::get('/billing/{id?}', 'BillingPlanController@billing');
+

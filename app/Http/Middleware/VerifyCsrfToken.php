@@ -19,7 +19,8 @@ class VerifyCsrfToken extends BaseVerifier {
         'createRole',
         'createRolePerm',
         'createMenu',
+        'createVendor',
+        'createPlan',
     ];
 
 }
-
