@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Services\VendorBillingService;
 
-class VendorBIllingController extends Controller
+class VendorBIllingController extends ApiController
 {
 
     public function vendor($id = null)
