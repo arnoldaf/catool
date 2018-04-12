@@ -16,6 +16,13 @@ Route::get('/',  'Auth\LoginController@getLogin');
 Route::get('/auth/login', 'Auth\LoginController@getLogin');
 Route::post('/auth/login', 'Auth\LoginController@postLogin');
 Route::any('/auth/logout', 'Auth\LoginController@logout');
+
+
+Route::resource('emailtemplates', 'EmailTemplateController');
+
+Auth::routes();
+
+/*
 Route::get('/dashboard', 'DashboardController@index');
 
 Route::get('/user/{id?}', 'UserController@index');
@@ -58,4 +65,4 @@ Route::get('/plans/{id?}', 'BillingPlanController@plans');
 Route::post('/createPlan', 'BillingPlanController@createPlan');
 Route::get('/deletePlan/{id}', 'BillingPlanController@deletePlan');
 Route::get('/billing/{id?}', 'BillingPlanController@billing');
-
+*/
