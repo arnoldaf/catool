@@ -20,6 +20,7 @@ class VerifyCsrfToken extends BaseVerifier {
         'createRolePerm',
         'createMenu',
         'createVendor',
+		'createVendorBilling',
         'createPlan',
     ];
 
