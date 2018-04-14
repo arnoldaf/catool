@@ -4,10 +4,7 @@ namespace App\Http\Middleware;
 
 use App;
 use Closure;
-use Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
-//use Tymon\JWTAuth\JWTAuth;
-//use JWTAuth;
 
 class Api {
 

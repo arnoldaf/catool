@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\MenuSetting;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class MenuController extends ApiController {
 
@@ -11,9 +12,12 @@ class MenuController extends ApiController {
      * To get Menu Items
      * @return type
      */
-    public function getMenus() {
+    public function getMenus(Request $request) {
         $menuItems = [];
-        $menus = (new MenuSetting)->getMenu(2);
+        //to get role id of logged in user
+        $token = str_replace('Bearer ',  '', $request->header('Authorization'));
+        $user = JWTAuth::authenticate($token);
+        $menus = (new MenuSetting)->getMenu($user->role_id == null ? 0 : $user->role_id);
         foreach ($menus as $menu) {
             if ($menu->p_id == 0) {
                 $menuItems[$menu->id] = $menu->toArray();
