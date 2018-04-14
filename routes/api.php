@@ -12,54 +12,57 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::post('v1/auth/login', 'Auth\LoginController@postLoginAuth');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('v1/aside-navs', 'Api\MenuController@getMenus');
+	
+Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
+	Route::get('aside-navs', 'Api\MenuController@getMenus');
+	Route::get('dashboard', 'DashboardController@index');
 
+	Route::get('user/{id?}', 'Api\UserController@index');
+	Route::get('users', 'Api\UserController@indexlist');
+	Route::post('createUsers', 'Api\UserController@createUsers');
+	Route::get('getUsers/{id?}', 'Api\UserController@getUsers');
 
+	Route::get('client/{id?}', 'Api\ClientController@index');
+	Route::get('clients', 'Api\ClientController@indexlist');
+	Route::post('createClient', 'Api\ClientController@createClient');
+	Route::get('getClients/{id?}', 'Api\ClientController@getClients');
+	Route::get('/deleteClient/{id}', 'Api\ClientController@deleteClient');
 
-Route::get('v1/dashboard', 'DashboardController@index');
+	Route::get('home', 'HomeController@index')->name('home');
 
-Route::get('v1/user/{id?}', 'Api\UserController@index');
-Route::get('v1/users', 'Api\UserController@indexlist');
-Route::post('v1/createUsers', 'Api\UserController@createUsers');
-Route::get('v1/getUsers/{id?}', 'Api\UserController@getUsers');
+	Route::post('createEnquiry', 'Api\EnquiryController@createEnquiry');
 
-Route::get('v1/client/{id?}', 'Api\ClientController@index');
-Route::get('v1/clients', 'Api\ClientController@indexlist');
-Route::post('v1/createClient', 'Api\ClientController@createClient');
-Route::get('v1/getClients/{id?}', 'Api\ClientController@getClients');
-Route::get('/deleteClient/{id}', 'Api\ClientController@deleteClient');
+	Route::get('role/{id?}', 'Api\RolesController@roles');
+	Route::post('role', 'Api\RolesController@createRole');
+	Route::delete('role', 'Api\RolesController@deleteRole');
+	
+	Route::post('rolePerm', 'Api\RolesController@createRolePerm');
+	Route::get('rolePerm/{id?}', 'Api\RolesController@rolePerm');
+	Route::delete('rolePerm/{id}', 'Api\RolesController@deleteRolePerm');
+	
+	Route::get('menu/{id?}', 'Api\RolesController@menu');
+	Route::post('menu', 'Api\RolesController@createMenu');
+	Route::delete('menu/{id}', 'Api\RolesController@deleteMenu');
 
-Route::get('v1/home', 'HomeController@index')->name('home');
+	Route::post('updatePassword', 'Api\UserController@updatePassword');
+	Route::post('forgotPassword', 'Api\UserController@forgotPassword');
 
-Route::post('v1/createEnquiry', 'Api\EnquiryController@createEnquiry');
+	Route::get('plan/{id?}', 'Api\BillingPlanController@plans');
+	Route::post('plan', 'Api\BillingPlanController@createPlan');
+	Route::delete('plan/{id}', 'Api\BillingPlanController@deletePlan');
+	
+	Route::get('billing/{id?}', 'Api\BillingPlanController@billing');
 
-Route::get('v1/roles/{id?}', 'Api\RolesController@roles');
-Route::get('v1/rolePerm/{id?}', 'Api\RolesController@rolePerm');
-Route::post('v1/createRole', 'Api\RolesController@createRole');
-Route::post('v1/createRolePerm', 'Api\RolesController@createRolePerm');
-Route::get('v1/deleteRolePerm/{id}', 'Api\RolesController@deleteRolePerm');
-Route::get('v1/menu/{id?}', 'Api\RolesController@menu');
-Route::post('v1/createMenu', 'Api\RolesController@createMenu');
-Route::get('v1/deleteMenu/{id}', 'Api\RolesController@deleteMenu');
+	Route::post('vendor', 'Api\VendorBillingController@createVendor');
+	Route::get('vendor/{id?}', 'Api\VendorBillingController@vendor');
+	Route::delete('vendor/{id}', 'Api\VendorBillingController@deleteVendor');
+	
+	Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
+	Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
+	Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
 
-Route::post('v1/updatePassword', 'Api\UserController@updatePassword');
-Route::post('v1/forgotPassword', 'Api\UserController@forgotPassword');
-
-Route::get('v1/plans/{id?}', 'Api\BillingPlanController@plans');
-Route::post('v1/createPlan', 'Api\BillingPlanController@createPlan');
-Route::get('v1/deletePlan/{id}', 'Api\BillingPlanController@deletePlan');
-Route::get('v1/billing/{id?}', 'Api\BillingPlanController@billing');
-
-
-
-Route::post('v1/createVendor', 'Api\VendorBillingController@createVendor');
-Route::get('v1/vendor/{id?}', 'Api\VendorBillingController@vendor');
-Route::get('v1/deleteVendor/{id}', 'Api\VendorBillingController@deleteVendor');
-
-Route::post('v1/createVendorBilling', 'Api\VendorBillingController@createVendorBilling');
-Route::get('v1/vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
-Route::get('v1/deleteVendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
+});
