@@ -11,7 +11,10 @@ class VendorBIllingController extends ApiController
     public function vendor($id = null)
     {
         $data = (new VendorBillingService)->vendor($id);
-        return response()->json($data);
+        //return response()->json($data);
+        $this->setResponseData($data);
+        
+        return $this->respond();
     }
 
     public function createVendor(Request $request)

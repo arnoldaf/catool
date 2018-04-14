@@ -66,6 +66,7 @@ class ApiController extends Controller {
     protected $httpStatus = HTTP_STATUS_OK;
     protected $response = [];
     protected $responseData;
+    protected $errors = [];
 
     public function __construct(Request $request) {
         if ($lang = $request->header('lang', $request->input('lang'))) {
@@ -103,6 +104,14 @@ class ApiController extends Controller {
     protected function getResponseData() {
         return $this->response;
     }
+    
+    protected function setErrorMessage($errors) {
+        return $this->errors = $errors;
+    }
+    
+    protected function getErrorMessage() {
+        return $this->errors;
+    }
 
     /**
      * 
@@ -110,7 +119,9 @@ class ApiController extends Controller {
      * @return type
      */
     public function respond($status = HTTP_STATUS_OK) {
-        $response = $this->getResponseData();
+        $response['data'] = $this->getResponseData();
+        $response['errors'] =  $this->errors;
+        
         $this->getMessage() ? $response['msg'] = $this->getMessage() : [];
 
         return Response::json($response, $status);
@@ -139,39 +150,6 @@ class ApiController extends Controller {
             ];
         }
         return $languageList;
-    }
-
-    public function checkStatus($mt4account = null) {
-        try {
-            $mt4Data = MT4_users::where('LOGIN', $mt4account)->first();
-            if (empty($mt4Data)) {
-                $response = ['res' => false, 'msg' => trans('Common.ajax_server_error')];
-                return $response;
-            }
-            if ($mt4Data->ENABLE != 1) {
-                $response = ['res' => false, 'msg' => trans('Priority.mt4disable')];
-                return $response;
-            } else {
-                //get user profile data
-                $user = DB::table('user_accounts as a')
-                        ->leftJoin('user_data as ud', 'a.user_ref_id', '=', 'ud.id')
-                        ->where('a.login', $mt4account)
-                        ->first();
-
-                $userId = $user->user_ref_id;
-                //check if current user profile is inactive
-                $currentData = UserData::where('id', $userId)->first();
-                if ($currentData->status != 1) {
-                    $response = ['res' => false, 'msg' => trans('Common.profile_inactive')];
-                    return $response;
-                }
-            }
-            $response = ['res' => true];
-            return $response;
-        } catch (\S3Exception $e) {
-            $this->error($e->message());
-            return $this->respond(422);
-        }
     }
 
 }

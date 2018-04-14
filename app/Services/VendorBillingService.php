@@ -106,14 +106,10 @@ class VendorBillingService
     public function vendor($id)
     {
         if ($id != null) {
-            $roles = DB::table('vendor')
-                            ->where('id', $id)->get();
+            return Vendor::find($id)->toArray();   
         } else {
-            $roles = DB::table('vendor')
-                    ->get();
+            return Vendor::all()->toArray();
         }
-
-        return $roles;
     }
 
     public function vendorBilling($id)

@@ -14,20 +14,19 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Input;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
     /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+      |--------------------------------------------------------------------------
+      | Login Controller
+      |--------------------------------------------------------------------------
+      |
+      | This controller handles authenticating users for the application and
+      | redirecting them to your home screen. The controller uses a trait
+      | to conveniently provide its functionality to your applications.
+      |
+     */
 
-    use AuthenticatesUsers;
+use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -41,19 +40,18 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest')->except('logout');
     }
-    
+
     public function getLogin() {
         setClientConfData();
-       
+
         return view('login');
     }
-    
+
     public function postLogin(Request $request) {
-       
+
         $requiredField = [
             "email" => "required|email|max:255",
             "password" => "required|min:5",
@@ -62,25 +60,22 @@ class LoginController extends Controller
         $responseMsg = "Email or password is wrong";
         if ($validate->fails()) {
             $responseMsg = implode("<br>", $validate->errors()->all());
-            
+
             return response()->json(['result' => false, 'msg' => $responseMsg]);
-        }       
+        }
         $email = $request->email;
         $password = $request->password;
         $clientId = Session::get('client_id');
         $loggedFlag = false;
         if ($clientId > 0) {
-            if (Auth::attempt(['id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {                
+            if (Auth::attempt(['id' => $clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
+                $loggedFlag = true;
+            } elseif (Auth::attempt(['p_id' => $clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {
+                $loggedFlag = true;
+            } elseif (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {
                 $loggedFlag = true;
             }
-            elseif (Auth::attempt(['p_id' =>$clientId, 'email' => $email, 'password' => $password, 'status' => '1'])) {   
-                $loggedFlag = true;
-            }
-            elseif (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
-                $loggedFlag = true;
-            }
-        }
-        else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {             
+        } else if (Auth::attempt(['email' => $email, 'password' => $password, 'status' => '1', 'role_id' => 0])) {
             $loggedFlag = true;
         }
         if ($loggedFlag) {
@@ -94,84 +89,66 @@ class LoginController extends Controller
             $eventLog->ip = request()->ip();
             $eventLog->info = json_encode($_SERVER);
             $eventLog->save();
-            
+
             return response()->json(['result' => true, 'msg' => 'Success']);
         }
-        
+
         return response()->json(['result' => false, 'msg' => $responseMsg]);
     }
-    
-    
-     public function postLoginAuth(Request $request) {
-        
-        $inputs = $request->all();
-          $request = $request->instance();
-          $content = $request->getContent();
-          $data = json_decode($content, TRUE);
-          Input::merge(['email' => $data['email']]);
-          Input::merge(['password' => $data['password']]);
-       
-        $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        //$request->input('email') = $data['email'];
-        //$request->password('password') = $data['password'];
-        
-        $request->merge([$field => $request->input('email')]);
+
+    public function postLoginAuth(Request $request) {
 
         try {
-            // attempt to verify the credentials and create a token for the user
-            if (!$token = JWTAuth::attempt($request->only($field, 'password'))) {
+            if (!$token = JWTAuth::attempt($request->only('email', 'password'))) {
                 return $this->setStatusCode(200)->respond([
                             'message' => __('Invalid Credentials'),
                             'status_code' => 404
                 ]);
             }
         } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
             return $this->setStatusCode(200)->respond([
                         'message' => __('could not create token'),
                         'status_code' => 500
             ]);
         }
-        
-        //Get the user.
-        $user = JWTAuth::authenticate($token);
 
-         
-        //Check if user is active.
+        $user = JWTAuth::authenticate($token);
         if ($user->status == 0) {
             return $this->setStatusCode(200)->respond([
                         'message' => __('user not active'),
                         'status_code' => 403
             ]);
         }
-        
-       // $token = encrypt($token);
-
-       
         //Get User Role
         $user_role = 'CA';
         $username = $user->first_name;
         $email = $user->email;
-        
+
+        $user->last_login = date('Y-m-d h:i:s');
+        $user->is_login = 1;
+        $user->save();
+        $eventLog = new ActivityLog();
+        $eventLog->activity_name = 'Login to system';
+        $eventLog->user_id = $user->id;
+        $eventLog->ip = request()->ip();
+        $eventLog->info = json_encode($_SERVER);
+        $eventLog->save();
         // all good so return the token
         return $this->setStatusCode(200)->respondWithToken(compact('token', 'user_role', 'username', 'email'));
-        
     }
-    
-    
-     /**
+
+    /**
      * Set Status Code
      *
      * @param type $statusCode
      * @return $this
      */
-    public function setStatusCode($statusCode)
-    {
+    public function setStatusCode($statusCode) {
         $this->statusCode = $statusCode;
 
         return $this;
     }
-    
+
     /**
      * Return Type For All Success Response
      *
@@ -179,8 +156,7 @@ class LoginController extends Controller
      * @param type $headers
      * @return type
      */
-    public function respond($data, $headers = [])
-    {
+    public function respond($data, $headers = []) {
         return response()->json($data, $this->getStatusCode(), $headers);
     }
 
@@ -190,8 +166,7 @@ class LoginController extends Controller
      * @param type $token
      * @return type
      */
-    public function respondWithToken($token)
-    {
+    public function respondWithToken($token) {
         return $this->respond(['data' => $token, 'status_code' => 201]);
     }
 
@@ -201,48 +176,41 @@ class LoginController extends Controller
      * @param type $message
      * @return type
      */
-    public function respondWithError($message)
-    {
+    public function respondWithError($message) {
         return $this->respond(['error' => [
                         'message' => $message,
                         'status_code' => $this->getStatusCode()
         ]]);
     }
-    
-     /**
+
+    /**
      * Get Status Code
      *
      * @return type
      */
-    public function getStatusCode()
-    {
+    public function getStatusCode() {
         return $this->statusCode;
     }
-    
-    
-     /**
+
+    /**
      * Return Type For Respond With Token
      *
      * @param type $token
      * @return type
      */
-    public function verify(Request $request)
-    {
-       return $this->setStatusCode(200)->respond(['data'=> 111,'status' => 200, 'status_code' => 200]);
-        
+    public function verify(Request $request) {
+        return $this->setStatusCode(200)->respond(['data' => 111, 'status' => 200, 'status_code' => 200]);
     }
-    
-    public function logout()
-    {
+
+    public function logout() {
         $user = Auth::user();
         if ($user) {
             $user->is_login = 0;
             $user->save();
         }
         Auth::logout();
-        
+
         return redirect(url('auth/login'));
     }
-    
-    
+
 }

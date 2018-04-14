@@ -26,8 +26,14 @@ class MenuController extends ApiController {
             if(!isset($menuItem['sub_menu'])) {
                 $menuItems[$key]['sub_menu'] = [];
             }
-        }
-
-        return response()->json(array_values($menuItems));
+        }      
+//        $errors = [
+//            'email' => 'invailid email',
+//            'first_name' => 'Numbers not allowed'
+//        ];
+//        $this->setErrorMessage($errors);
+        $this->setResponseData(array_values($menuItems));
+        
+        return $this->respond();
     }
 }
