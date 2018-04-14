@@ -25,10 +25,10 @@ class VendorBillingService
         );
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->getMessages() as $key => $value) {
-                $messges[] = $value[0];
+            foreach ($validator->errors()->getMessages() as $key => $value) {               
+                $messges[$key] = $value[0];
             }
-            return ['result' => false, 'message' => implode("<br>", $messges)];
+            return ['result' => false, 'message' => $messges];
         }
 
         $Vendor = ($request->input('id') > 0 ) ? Vendor::find($request->input('id')) : new Vendor;

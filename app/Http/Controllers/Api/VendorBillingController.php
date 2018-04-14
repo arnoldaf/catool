@@ -20,7 +20,14 @@ class VendorBIllingController extends ApiController
     public function createVendor(Request $request)
     {
         $data = (new VendorBillingService)->createVendor($request);
-        return response()->json($data);
+        if (!$data['result']) {
+            $this->setErrorMessage($data['message']);
+            
+            return $this->respond(HTTP_STATUS_BAD_REQUEST);
+        }
+        $this->setResponseData($data);
+        
+        return $this->respond();
     }
 
     public function deleteVendor($id = null)
