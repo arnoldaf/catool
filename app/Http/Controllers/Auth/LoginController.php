@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Input;
+use App\UserDomainConfig;
 
 class LoginController extends Controller
 {
@@ -103,40 +104,20 @@ class LoginController extends Controller
     
     
      public function postLoginAuth(Request $request) {
-        
-        $inputs = $request->all();
-          $request = $request->instance();
-          $content = $request->getContent();
-          $data = json_decode($content, TRUE);
-          Input::merge(['email' => $data['email']]);
-          Input::merge(['password' => $data['password']]);
-       
-        $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        //$request->input('email') = $data['email'];
-        //$request->password('password') = $data['password'];
-        
-        $request->merge([$field => $request->input('email')]);
-
         try {
-            // attempt to verify the credentials and create a token for the user
-            if (!$token = JWTAuth::attempt($request->only($field, 'password'))) {
+            if (!$token = JWTAuth::attempt($request->only('email', 'password'))) {
                 return $this->setStatusCode(200)->respond([
                             'message' => __('Invalid Credentials'),
                             'status_code' => 404
                 ]);
             }
         } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
             return $this->setStatusCode(200)->respond([
                         'message' => __('could not create token'),
                         'status_code' => 500
             ]);
         }
-        
-        //Get the user.
         $user = JWTAuth::authenticate($token);
-
-         
         //Check if user is active.
         if ($user->status == 0) {
             return $this->setStatusCode(200)->respond([
@@ -144,15 +125,21 @@ class LoginController extends Controller
                         'status_code' => 403
             ]);
         }
+        //to authenticate domain
+        if ($user->role_id > 0) {
+            $pId = $user->p_id;           
+            $clientDomain = (!$request->header('domain')) ? env(DEFAULT_DOMAIN, 'localhost:4200') : str_replace(['http://', 'https://'], '', $request->header('domain'));
+            $clientInfo = UserDomainConfig::whereIn('user_id', [$user->id, $pId])
+                    ->where('domain_name', $clientDomain)
+                    ->first();
+            if (!$clientInfo) {
+                return response()->json(['error' => ['user' => trans('User not found')]], 404);
+            }
+        }
         
-       // $token = encrypt($token);
-
-       
-        //Get User Role
         $user_role = 'CA';
         $username = $user->first_name;
         $email = $user->email;
-        
         // all good so return the token
         return $this->setStatusCode(200)->respondWithToken(compact('token', 'user_role', 'username', 'email'));
         
