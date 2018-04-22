@@ -128,7 +128,7 @@ class LoginController extends Controller
         //to authenticate domain
         if ($user->role_id > 0) {
             $pId = $user->p_id;           
-            $clientDomain = (!$request->header('domain')) ? env(DEFAULT_DOMAIN, 'localhost:4200') : str_replace(['http://', 'https://'], '', $request->header('domain'));
+            $clientDomain = (!$request->header('host')) ? env(DEFAULT_DOMAIN, 'localhost:4200') : str_replace(['http://', 'https://'], '', $request->header('host'));
             $clientInfo = UserDomainConfig::whereIn('user_id', [$user->id, $pId])
                     ->where('domain_name', $clientDomain)
                     ->first();
