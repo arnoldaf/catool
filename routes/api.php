@@ -65,5 +65,5 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
 	Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
 	Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
-
+        Route::get('article-topics', 'Api\ArticleController@getArticleTopics');
 });
