@@ -14,6 +14,9 @@ class CreateEmailProfilesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable($this->tbl)) {
+            return;
+        }
         Schema::create($this->tbl, function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');

@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmailProfileIncomingTable extends Migration
+class CreateArticleTopicTable extends Migration
 {
-    private $tbl = 'email_profile_incoming';
+    private $tbl = 'article_topics';
     /**
      * Run the migrations.
      *
@@ -19,8 +19,7 @@ class CreateEmailProfileIncomingTable extends Migration
         }
         Schema::create($this->tbl, function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->string('email');
+            $table->string('name');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
@@ -33,6 +32,6 @@ class CreateEmailProfileIncomingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists($this->tbl);
+        Schema::dropIfExists('article_topics');
     }
 }
