@@ -40,3 +40,7 @@ if (!function_exists('getMenu')) {
 function setMenu() {
     $menus = getMenu();
 }
+
+function getCurrentUser() {
+    return Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
+}
