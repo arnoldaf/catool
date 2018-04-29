@@ -5,6 +5,7 @@ namespace App\Services;
 use Validator;
 use App\Users;
 use DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService {
 
@@ -73,7 +74,7 @@ class UserService {
            $users = Users:: where('p_id','2')->orderBy('id','desc')->get();
        }
      
-       return ['data' => $users];
+       return $users->toArray();
     }
 
 
@@ -84,11 +85,12 @@ class UserService {
     * @param  int  $id
     * @return Response
     */
-   public function deleteUsers($id) {
+   public function deleteUsers($request) {
+       $id = $request->input('id');
        // delete
        $users = Users::find($id);
        $users->delete();
-       return ['result' => true, 'msg' => 'User deleted successfully','status_code' =>200];
+       return $users->toArray();
    }
 
 	
@@ -162,49 +164,84 @@ class UserService {
     * @return Response
     */
    public function addUser($request) {
-      
+       
                $messges = [];
                $validator = Validator::make($request->all(), [
                            'firstname' => 'required|max:255',
                            'lastname' => 'required|max:255',
                            'email' => 'required|email|max:255|unique:users,email,' . $request->input('id'),
                            'phonenumber' => 'required|max:10|unique:users,mobile,' . $request->input('id'),
-                           'password' => 'min:6',
-                           'passwor_confirmation' => 'required_with:password|same:password|min:6'
+                           //'password' => 'min:6',
+                           //'password_confirmation' => 'required_with:password|same:password|min:6'
                                ], [
-                           'firstname.required' => 'Name is required.',
-                           'lastname.required' => 'Name is required.',
+                           'firstname.required' => 'First name is required.',
+                           'lastname.required' => 'Last name is required.',
                            'email.required' => 'We need to know your e-mail address!',
                            'phonenumber.required' => 'We need to know your mobile!',
                            'password.required' => 'Password is required!',
-                           'passwor_confirmation.required' => 'Confirm Password must be same as password!',
-                               ]
+                           'password_confirmation.required' => 'Confirm Password must be same as password!',
+                       ]
                );
-      
+               
                if ($validator->fails()) {
                    foreach ($validator->errors()->getMessages() as $key => $value) {
-                       $messges[] = $value[0];
+                        $messges[$key] = $value[0];
                    }
-                   return ['result' => false, 'msg' => implode("<br>", $messges),'status_code' =>204];
+                   return ['errors' => $messges];
                }
-      
+              // print_r( $request->all());
+               //DB::enableQueryLog();  
                $Users = ($request->input('id') > 0 ) ? Users::find($request->input('id')) : new Users;
                $Users->first_name = $request->input('firstname');
                $Users->last_name = $request->input('lastname');
                $Users->email = $request->input('email');
-               $Users->password = bcrypt($request->input('password'));
                $Users->mobile = $request->input('phonenumber');
                $Users->user_type_id = $request->input('client_type');
                $Users->ip_address = $request->ip();
-               $Users->p_id = 2;
+               $Users->p_id = $this->getLoginId($request);
                $Users->status = 1;
-               $Users->save();
-               if ($request->input('id') > 0) {
-                   return ['result' => true, 'msg' => 'User updated successfully','status_code' =>200];
-               } else {
-                   return ['result' => true, 'msg' => 'User added successfully','status_code' =>204];
+               if($request->input('password') != '') {
+                $Users->password = bcrypt($request->input('password'));
                }
+               //->toSql()
+                       
+               $Users->save();
+               
+              //dd(DB::getQueryLog());  
+               return ['data'>$Users->toArray(), 'errors' => ''];
+               //return $Users->toArray();
        }
+       
+       
+    /**
+    * parse Token
+    * @return type array
+    */
+    public function parseToken()
+    {
+        return $payload = JWTAuth::parseToken()->getPayload();
+    }
+
+    /**
+     * get parent id 
+     * @return type int
+     */
+    public function getParentId($request)
+    {
+        $token = str_replace('Bearer ',  '', $request->header('Authorization'));
+        $user = JWTAuth::authenticate($token);
+        return $user->pid;
+    }
+    /**
+     * get whitelabel id 
+     * @return type int
+     */
+    public function getLoginId($request)
+    {
+        $token = str_replace('Bearer ',  '', $request->header('Authorization'));
+        $user = JWTAuth::authenticate($token);
+        return $user->id;
+    }
 
        
 
