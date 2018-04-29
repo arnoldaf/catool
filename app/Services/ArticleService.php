@@ -10,7 +10,10 @@ use App\User;
 use App\Roles;
 
 class ArticleService {
-
+    protected $recordPerPage = null;
+    public function __construct() {
+        $this->recordPerPage = env('RECORD_PER_PAGE', 10);
+    }
     /**
      * To get all master topics
      * @return Array
@@ -89,11 +92,11 @@ class ArticleService {
         $userId = getCurrentUser()->id;
         // If pId > 0 then need to get articles of only logged in user
         if (getCurrentUser()->p_id > 0 ) {
-            $articles = UserArticle::with('userArticleDocs')->where('user_id', $userId)->get();           
+            $articles = UserArticle::with('userArticleDocs')->where('user_id', $userId)->paginate($this->recordPerPage);           
         } else { //If pId = 0 then need to get all user's article under this user
             // to get all user's id under this user
             $userIds = User::where('p_id', $userId)->pluck('id');
-            $articles = UserArticle::with('userArticleDocs')->whereIn('user_id', $userIds)->get();
+            $articles = UserArticle::with('userArticleDocs')->whereIn('user_id', $userIds)->paginate($this->recordPerPage);
         }
         if ($articles) {
             $articleWithDocs = $articles->toArray();
@@ -113,7 +116,7 @@ class ArticleService {
         if (!$role) {
             return ['result' => false, 'key' => 'role', 'message' => 'role intern does not exist'];
         }
-        $users = User::where(['p_id' => $adminId, 'role_id' => $role->id])->get();
+        $users = User::where(['p_id' => $adminId, 'role_id' => $role->id])->paginate($this->recordPerPage);
         if ($users) {
             return ['result' => true, 'data'=>$users->toArray()];
         }
