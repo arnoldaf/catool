@@ -35,17 +35,36 @@ class UserController extends ApiController {
         return response()->json($data);
     }
 
+    public function addUser(Request $request) {
+        $data = (new UserService)->addUser($request);
+        
+        if ($data['errors'] != null ) {
+            $this->setErrorMessage($data['errors']);
+            return $this->respond();
+        }
+        $this->setResponseData($data);
+        return $this->respond(); 
+        //return response()->json($data);
+    }
+    
     public function getUsers($id = null) {
-        $data = (new UserService)->getUsers($id);
-        return response()->json($data);
+        $users = (new UserService)->getUsers($id);
+        $this->setResponseData($users);
+        return $this->respond();   
     }
 
-    public function deleteUsers($id = null) {
-        $data = (new UserService)->deleteUsers($id);
-        return response()->json($data);
+    public function deleteUsers(Request $request) {
+        $data = (new UserService)->deleteUsers($request);
+        /*
+        if ($data['errors'] != null ) {
+            $this->setErrorMessage($data['errors']);
+            return $this->respond();
+        }*/
+        $this->setResponseData($data);
+        return $this->respond();  
     }
 	
-	 public function updatePassword(Request $request) {
+    public function updatePassword(Request $request) {
         $data = (new UserService)->updatePassword($request);
         return response()->json($data);
     }

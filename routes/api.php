@@ -24,8 +24,11 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 
 	Route::get('user/{id?}', 'Api\UserController@index');
 	Route::get('users', 'Api\UserController@indexlist');
-	Route::post('createUsers', 'Api\UserController@createUsers');
+	//Route::post('createUsers', 'Api\UserController@createUsers');
+        Route::post('getUsers', 'Api\UserController@addUser');
 	Route::get('getUsers/{id?}', 'Api\UserController@getUsers');
+        Route::put('getUsers/{id?}', 'Api\UserController@addUser');
+        Route::delete('getUsers/{id?}', 'Api\UserController@deleteUsers');
 
 	Route::get('client/{id?}', 'Api\ClientController@index');
 	Route::get('clients', 'Api\ClientController@indexlist');
