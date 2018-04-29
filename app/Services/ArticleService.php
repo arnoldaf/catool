@@ -6,13 +6,24 @@ use App\ArticleTopic;
 use App\UserArticle;
 use App\UserArticleDoc;
 use App\Services\UploadFileService;
+use App\User;
+use App\Roles;
 
 class ArticleService {
 
+    /**
+     * To get all master topics
+     * @return Array
+     */
     public function getArticleTopics() {
         return ArticleTopic::get()->toArray();
     }
     
+    /**
+     * To save user's article
+     * @param type $request
+     * @return boolean|UserArticle
+     */
     public function saveArticles($request) {
         try {
             
@@ -32,7 +43,7 @@ class ArticleService {
                     $article->article_topic_id = $articleTopic->id;
                 }
             }
-            $article->user_id = $request['userId'];
+            $article->user_id = getCurrentUser()->id;
             $article->title = $request['title'];
             $article->description = $request['description'];
             $article->spent_hrs = $request['spentHrs'];
@@ -41,7 +52,7 @@ class ArticleService {
             if ($request['file']) {
                 $uploads = (new UploadFileService)->upload($request['file']);
                 $toBeSaveDocs = [];
-                if (!empty($upload)) {
+                if (!empty($uploads)) {
                     foreach ($uploads as $key => $upload ) {
                         $toBeSaveDocs[$key] = [
                             'user_article_id' => $article->id,
@@ -59,5 +70,78 @@ class ArticleService {
         
         return $article;
     }
-
+    
+    /**
+     * To get user's article
+     * @return Array
+     */
+    public function getUserArticle($selectedUserId = null) {
+        $articleWithDocs = [];
+        if ($selectedUserId != null ) {  // to get articles by userId
+            $articles = UserArticle::with('userArticleDocs')->where('user_id', $selectedUserId)->get();   
+            if ($articles) {
+                $articleWithDocs = $articles->toArray();
+            }
+            
+            return $articleWithDocs;
+        }
+        //to get logged in user's Id
+        $userId = getCurrentUser()->id;
+        // If pId > 0 then need to get articles of only logged in user
+        if (getCurrentUser()->p_id > 0 ) {
+            $articles = UserArticle::with('userArticleDocs')->where('user_id', $userId)->get();           
+        } else { //If pId = 0 then need to get all user's article under this user
+            // to get all user's id under this user
+            $userIds = User::where('p_id', $userId)->pluck('id');
+            $articles = UserArticle::with('userArticleDocs')->whereIn('user_id', $userIds)->get();
+        }
+        if ($articles) {
+            $articleWithDocs = $articles->toArray();
+        }
+        
+        return $articleWithDocs;
+    }
+    
+    /**
+     * To get all inters users under ca
+     * @return Array
+     */
+    public function getInternUsers() {
+        // to get role of inter user
+        $adminId = getCurrentUser()->id;
+        $role = (new Roles)->getByName('intern-user');
+        if (!$role) {
+            return ['result' => false, 'key' => 'role', 'message' => 'role intern does not exist'];
+        }
+        $users = User::where(['p_id' => $adminId, 'role_id' => $role->id])->get();
+        if ($users) {
+            return ['result' => true, 'data'=>$users->toArray()];
+        }
+        return ['result' => true, 'data' => ''];
+    }
+    
+    /**
+     * To delete users article which is in pending status
+     * @param type $id
+     * @return int
+     */
+    public function articleDelete($id) {
+        //if id does not belong to logged user then no action
+        if( UserArticle::where([ 'id' => $id, 'user_id' => getCurrentUser()->id, 'status' => 0])->delete()) {
+            UserArticleDoc::where('user_article_id', $id)->delete();
+        } else {
+            return 0;
+        }
+        
+        return 1;
+    }
+    
+    /**
+     * To update status of articles
+     * @param type $id
+     * @return bool
+     */
+    public function articleStatusUpdate($id) {
+        return (new UserArticle)->updateStatus($id, getCurrentUser()->id);
+    }
 }

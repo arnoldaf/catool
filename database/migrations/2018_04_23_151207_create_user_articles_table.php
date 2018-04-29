@@ -24,6 +24,7 @@ class CreateUserArticlesTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->float('spent_hrs', 8, 2);
+            $table->tinyInteger('status');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

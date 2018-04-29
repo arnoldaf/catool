@@ -28,5 +28,9 @@ class Roles extends Authenticatable {
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function getByName($name = null) {
+        return $this->where('name', $name)->first();
+    }
 
 }

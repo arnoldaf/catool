@@ -67,4 +67,9 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
         Route::get('article-topics', 'Api\ArticleController@getArticleTopics');
         Route::post('articles', 'Api\ArticleController@saveArticles');
+        Route::get('articles', 'Api\ArticleController@getArticles');
+        Route::get('articles/intern-users', 'Api\ArticleController@getInternUsers');
+        Route::get('users/{userId}/articles', 'Api\ArticleController@getArticles');
+        Route::delete('articles/{id}', 'Api\ArticleController@delete');
+        Route::put('articles/{id}', 'Api\ArticleController@updateStatus');
 });
