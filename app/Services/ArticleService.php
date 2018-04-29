@@ -81,7 +81,7 @@ class ArticleService {
     public function getUserArticle($selectedUserId = null) {
         $articleWithDocs = [];
         if ($selectedUserId != null ) {  // to get articles by userId
-            $articles = UserArticle::with('userArticleDocs')->where('user_id', $selectedUserId)->get();   
+            $articles = UserArticle::with('userArticleDocs')->where('user_id', $selectedUserId)->paginate($this->recordPerPage);   
             if ($articles) {
                 $articleWithDocs = $articles->toArray();
             }
