@@ -14,7 +14,14 @@ class VerifyCsrfToken extends BaseVerifier {
     protected $except = [
         'createClient',
         'createUsers',
-       
+        'createEnquiry',
+        'createRole',
+        'createRolePerm',
+        'createMenu',
+        'createVendor',
+        'createVendorBilling',
+        'createPlan',
+        'createEmailTemplate',
     ];
 
 }
