@@ -21,7 +21,7 @@ class VerifyCsrfToken extends BaseVerifier {
         'createVendor',
         'createVendorBilling',
         'createPlan',
-        'createEmailTemplate',
+        'createEmailTemplate', 
     ];
 
 }

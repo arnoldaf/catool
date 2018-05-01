@@ -26,5 +26,6 @@ class EmailTemplateController extends ApiController {
         $data = (new EmailTemplateService)->deleteEmailTemplate($id);
         return response()->json($data);
     }
+    
 
 }

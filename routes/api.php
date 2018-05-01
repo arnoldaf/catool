@@ -75,6 +75,7 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('emailtemplate/{id?}', 'Api\EmailTemplateController@getEmailTemplate');
 	Route::delete('emailtemplate/{id}', 'Api\EmailTemplateController@deleteEmailTemplate');
         Route::get('emailgroup/{id?}', 'Api\EmailTemplateController@getEmailGroup');
+        
 	
 	Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
 	Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');

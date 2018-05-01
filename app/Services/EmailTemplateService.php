@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Validator;
 use App\EmailTemplate;
-use DB;
+use DB; 
 
 class EmailTemplateService {
 
