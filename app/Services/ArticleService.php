@@ -21,7 +21,7 @@ class ArticleService {
     public function getArticleTopics() {
         return ArticleTopic::get()->toArray();
     }
-    
+
     /**
      * To save user's article
      * @param type $request
@@ -29,12 +29,12 @@ class ArticleService {
      */
     public function saveArticles($request) {
         try {
-            
+
             $article = new UserArticle();
             //if otherTopic is not null then need to create this article
             $article->article_topic_id = $request['articleTopicId'];
             if ($request['otherTopic'] != null ) {
-                //to find this topic already exist or need to create 
+                //to find this topic already exist or need to create
                 $existTopic = (new ArticleTopic)->getByName($request['otherTopic']);
                 if ($existTopic) {
                     $article->article_topic_id = $existTopic->id;
@@ -51,8 +51,8 @@ class ArticleService {
             $article->description = $request['description'];
             $article->spent_hrs = $request['spentHrs'];
             $article->save();
-            // if save then need to save file 
-            if ($request['file']) {
+            // if save then need to save file
+            if (!empty($request['file'])) {
                 $uploads = (new UploadFileService)->upload($request['file']);
                 $toBeSaveDocs = [];
                 if (!empty($uploads)) {
@@ -70,10 +70,10 @@ class ArticleService {
         } catch (Exception $e) {
             return false;
         }
-        
+
         return $article;
     }
-    
+
     /**
      * To get user's article
      * @return Array
@@ -81,30 +81,35 @@ class ArticleService {
     public function getUserArticle($selectedUserId = null) {
         $articleWithDocs = [];
         if ($selectedUserId != null ) {  // to get articles by userId
-            $articles = UserArticle::with('userArticleDocs')->where('user_id', $selectedUserId)->paginate($this->recordPerPage);   
+            $articles = (new UserArticle)->getArticlesByUser($selectedUserId, $this->recordPerPage);
             if ($articles) {
                 $articleWithDocs = $articles->toArray();
             }
-            
+
             return $articleWithDocs;
         }
         //to get logged in user's Id
         $userId = getCurrentUser()->id;
         // If pId > 0 then need to get articles of only logged in user
         if (getCurrentUser()->p_id > 0 ) {
-            $articles = UserArticle::with('userArticleDocs')->where('user_id', $userId)->paginate($this->recordPerPage);           
+            $articles = (new UserArticle)->getArticlesByUser($userId, $this->recordPerPage);
         } else { //If pId = 0 then need to get all user's article under this user
             // to get all user's id under this user
             $userIds = User::where('p_id', $userId)->pluck('id');
-            $articles = UserArticle::with('userArticleDocs')->whereIn('user_id', $userIds)->paginate($this->recordPerPage);
+            $articles = UserArticle::with('userArticleDocs')
+                    ->select('user_articles.*', 'article_topics.name as topic_name')
+                    ->join('article_topics', 'user_articles.article_topic_id', '=', 'article_topics.id')
+                    ->whereIn('user_articles.user_id', $userIds)
+                    ->orderBy('user_articles.id', 'desc')
+                    ->paginate($this->recordPerPage);
         }
         if ($articles) {
             $articleWithDocs = $articles->toArray();
         }
-        
+
         return $articleWithDocs;
     }
-    
+
     /**
      * To get all inters users under ca
      * @return Array
@@ -122,7 +127,7 @@ class ArticleService {
         }
         return ['result' => true, 'data' => ''];
     }
-    
+
     /**
      * To delete users article which is in pending status
      * @param type $id
@@ -135,10 +140,10 @@ class ArticleService {
         } else {
             return 0;
         }
-        
+
         return 1;
     }
-    
+
     /**
      * To update status of articles
      * @param type $id

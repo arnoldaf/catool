@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
  Route::get('v1/verify',  'Api\UserController@verify');
- 
+
 Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('aside-navs', 'Api\MenuController@getMenus');
 	Route::get('dashboard', 'DashboardController@index');
@@ -29,12 +29,12 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('getUsers/{id?}', 'Api\UserController@getUsers');
         Route::put('getUsers/{id?}', 'Api\UserController@addUser');
         Route::delete('getUsers/{id?}', 'Api\UserController@deleteUsers');
-        
+
         Route::post('getCaUsers', 'Api\UserController@addCaUser');
 	Route::get('getCaUsers/{id?}', 'Api\UserController@getCaUsers');
         Route::put('getCaUsers/{id?}', 'Api\UserController@addCaUser');
         Route::delete('getCaUsers/{id?}', 'Api\UserController@deleteCaUsers');
-        
+
 
 	Route::get('client/{id?}', 'Api\ClientController@index');
 	Route::get('clients', 'Api\ClientController@indexlist');
@@ -49,11 +49,11 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('role/{id?}', 'Api\RolesController@roles');
 	Route::post('role', 'Api\RolesController@createRole');
 	Route::delete('role', 'Api\RolesController@deleteRole');
-	
+
 	Route::post('rolePerm', 'Api\RolesController@createRolePerm');
 	Route::get('rolePerm/{id?}', 'Api\RolesController@rolePerm');
 	Route::delete('rolePerm/{id}', 'Api\RolesController@deleteRolePerm');
-	
+
 	Route::get('menu/{id?}', 'Api\RolesController@menu');
 	Route::post('menu', 'Api\RolesController@createMenu');
 	Route::delete('menu/{id}', 'Api\RolesController@deleteMenu');
@@ -64,23 +64,23 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('plan/{id?}', 'Api\BillingPlanController@plans');
 	Route::post('plan', 'Api\BillingPlanController@createPlan');
 	Route::delete('plan/{id}', 'Api\BillingPlanController@deletePlan');
-	
+
 	Route::get('billing/{id?}', 'Api\BillingPlanController@billing');
 
 	Route::post('vendor', 'Api\VendorBillingController@createVendor');
 	Route::get('vendor/{id?}', 'Api\VendorBillingController@vendor');
 	Route::delete('vendor/{id}', 'Api\VendorBillingController@deleteVendor');
-        
+
         Route::post('emailtemplate', 'Api\EmailTemplateController@createEmailTemplate');
 	Route::get('emailtemplate/{id?}', 'Api\EmailTemplateController@getEmailTemplate');
 	Route::delete('emailtemplate/{id}', 'Api\EmailTemplateController@deleteEmailTemplate');
         Route::get('emailgroup/{id?}', 'Api\EmailTemplateController@getEmailGroup');
-        
-	
+
+
 	Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
 	Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
 	Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
-        Route::get('article-topics', 'Api\ArticleController@getArticleTopics');
+        Route::get('articles/topics', 'Api\ArticleController@getArticleTopics');
         Route::post('articles', 'Api\ArticleController@saveArticles');
         Route::get('articles', 'Api\ArticleController@getArticles');
         Route::get('articles/intern-users', 'Api\ArticleController@getInternUsers');
