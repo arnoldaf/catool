@@ -52,6 +52,13 @@ class UserController extends ApiController {
         $this->setResponseData($users);
         return $this->respond();   
     }
+    
+    public function getCaUsers($id = null) {
+        $users = (new UserService)->getCaUsers($id);
+        $this->setResponseData($users);
+        return $this->respond();   
+    }
+    
 
     public function deleteUsers(Request $request) {
         $data = (new UserService)->deleteUsers($request);
@@ -73,6 +80,19 @@ class UserController extends ApiController {
         $data = (new UserService)->forgotPassword($request);
         return response()->json($data);
     }
+    
+     public function addCaUser(Request $request) {
+        $data = (new UserService)->addCaUser($request);
+        
+        if ($data['errors'] != null ) {
+            $this->setErrorMessage($data['errors']);
+            return $this->respond();
+        }
+        $this->setResponseData($data);
+        return $this->respond(); 
+        //return response()->json($data);
+    }
+    
     
     /**
     * Return Type For Respond With Token
