@@ -6,19 +6,17 @@ use Validator;
 use App\Vendor;
 use App\VendorBilling;
 use DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class VendorBillingService
-{
+class VendorBillingService {
 
-    public function createVendor($request)
-    {
+    public function createVendor($request) {
+
         $messges = [];
         $validator = Validator::make($request->all(), [
-                    'p_id' => 'required|max:255',
                     'name' => 'required|max:255|unique:vendor,name,' . $request->input('id'),
                     'gst_number' => 'required|max:255'
                         ], [
-                    'p_id.required' => 'Client is required.',
                     'name.required' => 'Vendor name is required.',
                     'gst_number.required' => 'Vendor GST Number is required.',
                         ]
@@ -26,25 +24,21 @@ class VendorBillingService
 
         if ($validator->fails()) {
             foreach ($validator->errors()->getMessages() as $key => $value) {
-                $messges[] = $value[0];
+                $messges[$key] = $value[0];
             }
-            return ['result' => false, 'message' => implode("<br>", $messges)];
+            return ['errors' => $messges];
         }
 
         $Vendor = ($request->input('id') > 0 ) ? Vendor::find($request->input('id')) : new Vendor;
+
+        $Vendor->p_id = getCurrentUser()->id;
         $Vendor->name = $request->input('name');
-        $Vendor->p_id = $request->input('p_id');
         $Vendor->gst_number = $request->input('gst_number');
         $Vendor->save();
-        if ($request->input('id') > 0) {
-            return ['result' => true, 'message' => 'Vendor updated successfully'];
-        } else {
-            return ['result' => true, 'message' => 'Vendor added successfully'];
-        }
+        return ['data' > $Vendor->toArray(), 'errors' => ''];
     }
 
-    public function createVendorBilling($request)
-    {
+    public function createVendorBilling($request) {
         $messges = [];
         $validator = Validator::make($request->all(), [
                     'vendor_id' => 'required|max:255',
@@ -69,7 +63,7 @@ class VendorBillingService
         }
 
         $VendorBilling = ($request->input('id') > 0 ) ? VendorBilling::find($request->input('id')) : new VendorBilling;
-        $image = $request->file('images');
+        echo $image = $request->file('bill_file');
         $path = public_path() . '/bills/';
         $filename = time() . '.' . $image->getClientOriginalExtension();
         $image->move($path, $filename);
@@ -91,42 +85,54 @@ class VendorBillingService
         }
     }
 
-    public function deleteVendor($id)
-    {
-        DB::table('vendor')->where('id', '=', $id)->delete();
-        return ['result' => true, 'message' => 'Vendor deleted successfully'];
+    public function deleteVendor($request) {
+        $id = $request->input('id');
+        // delete
+        $vendor = Vendor::find($id);
+        $vendor->delete();
+        return $vendor->toArray();
     }
 
-    public function deleteVendorBilling($id)
-    {
-        DB::table('vendor_billing')->where('id', '=', $id)->delete();
-        return ['result' => true, 'message' => 'Vendor Bill deleted successfully'];
+    public function deleteVendorBilling($request) {
+
+        $id = $request->input('id');
+        // delete
+        $vendorBilling = VendorBilling::find($id);
+        $vendorBilling->delete();
+        return $vendorBilling->toArray();
     }
 
-    public function vendor($id)
-    {
+    public function vendor($id) {
         if ($id != null) {
-            $roles = DB::table('vendor')
+            $vendors = DB::table('vendor')
                             ->where('id', $id)->get();
         } else {
-            $roles = DB::table('vendor')
+            $vendors = DB::table('vendor')
+                    ->get();
+        }
+        //return ['data' => $vendors];
+        return $vendors->toArray();
+    }
+
+    public function vendorBilling($id) {
+        if ($id != null) {
+            $bills = DB::table('vendor_billing')
+                            ->where('id', $id)->get();
+        } else {
+            $bills = DB::table('vendor_billing')
                     ->get();
         }
 
-        return $roles;
+        // return $roles;
+        return ['data' => $bills];
     }
 
-    public function vendorBilling($id)
-    {
-        if ($id != null) {
-            $roles = DB::table('vendor_billing')
-                            ->where('id', $id)->get();
-        } else {
-            $roles = DB::table('vendor_billing')
-                    ->get();
-        }
-
-        return $roles;
+    /**
+     * parse Token
+     * @return type array
+     */
+    public function parseToken() {
+        return $payload = JWTAuth::parseToken()->getPayload();
     }
 
 }

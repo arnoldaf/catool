@@ -11,21 +11,26 @@ class EmailTemplateController extends ApiController {
         $data = (new EmailTemplateService)->getEmailTemplate($id);
         return response()->json($data);
     }
-    
-     public function getEmailGroup($id = null) {
+
+    public function getEmailGroup($id = null) {
         $data = (new EmailTemplateService)->getEmailGroup($id);
         return response()->json($data);
     }
 
     public function createEmailTemplate(Request $request) {
+
         $data = (new EmailTemplateService)->createEmailTemplate($request);
-        return response()->json($data);
+        if ($data['errors'] != null) {
+            $this->setErrorMessage($data['errors']);
+            return $this->respond();
+        }
+        $this->setResponseData($data);
+        return $this->respond();
     }
 
     public function deleteEmailTemplate($id = null) {
         $data = (new EmailTemplateService)->deleteEmailTemplate($id);
         return response()->json($data);
     }
-    
 
 }
