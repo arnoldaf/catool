@@ -266,8 +266,8 @@ class UserService {
                     'email' => 'required|email|max:255|unique:users,email,' . $request->input('id'),
                     'url' => 'required|max:255|unique:users,url,' . $request->input('id'),
                     'mobile' => 'required|max:10|unique:users,mobile,' . $request->input('id'),
-                    'password' => 'min:6',
-                    'password_confirmation' => 'required_with:password|same:password|min:6'
+                    'password' => 'nullable|min:6',
+                    'password_confirmation' => 'nullable|required_with:password|same:password|min:6'
                    ], [
                     'firstname.required' => 'First name is required.',
                     'lastname.required' => 'Last name is required.',

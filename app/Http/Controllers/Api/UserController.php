@@ -70,6 +70,13 @@ class UserController extends ApiController {
         $this->setResponseData($data);
         return $this->respond();  
     }
+    
+     public function deleteCaUsers(Request $request) {
+        $data = (new UserService)->deleteUsers($request);
+        $this->setResponseData($data);
+        return $this->respond();  
+    }
+    
 	
     public function updatePassword(Request $request) {
         $data = (new UserService)->updatePassword($request);
