@@ -35,6 +35,6 @@ and user_id in (select id from users where p_id = ? )", [$articleId, $userId]);
                     ->join('article_topics', 'user_articles.article_topic_id', '=', 'article_topics.id')
                     ->where('user_articles.user_id', $userId)
                     ->orderBy('user_articles.id', 'desc')
-                    ->paginate($recordPerPage);  
+                    ->get();  
     }
 }

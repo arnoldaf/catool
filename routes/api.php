@@ -87,4 +87,6 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
         Route::get('users/{userId}/articles', 'Api\ArticleController@getArticles');
         Route::delete('articles/{id}', 'Api\ArticleController@delete');
         Route::put('articles/{id}', 'Api\ArticleController@updateStatus');
+        Route::get('articles/{id}', 'Api\ArticleController@getArticleDetail');
+        Route::post('user-articles', 'Api\ArticleController@updateArticle');
 });

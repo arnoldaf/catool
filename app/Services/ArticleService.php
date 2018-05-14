@@ -50,10 +50,13 @@ class ArticleService {
             $article->title = $request['title'];
             $article->description = $request['description'];
             $article->spent_hrs = $request['spentHrs'];
+            $article->status = 0;
             $article->save();
             // if save then need to save file
-            if (!empty($request['file'])) {
-                $uploads = (new UploadFileService)->upload($request['file']);
+            //dd($request['files']);
+            if (!empty($request['files'])) {
+                $uploads = (new UploadFileService)->upload($request['files']);
+                dd($uploads);
                 $toBeSaveDocs = [];
                 if (!empty($uploads)) {
                     foreach ($uploads as $key => $upload ) {
@@ -151,5 +154,54 @@ class ArticleService {
      */
     public function articleStatusUpdate($id) {
         return (new UserArticle)->updateStatus($id, getCurrentUser()->id);
+    }
+
+    /**
+     * To get article detail
+     * @param type $id
+     * @return type
+     */
+    public function articleDetail($id) {
+        $userId = getCurrentUser()->id;
+        $article = UserArticle::where(['id' => $id, 'user_id' => $userId, 'status' => 0])->first();
+        if( $article) {
+            return $article->toArray();
+        }
+        return null;
+    }
+    
+    /**
+     * To update article detail
+     * @param type $id
+     */
+    public function articleUpdate($request) {
+        $id = $request['id'];
+        $userId = getCurrentUser()->id;
+        $article = UserArticle::where(['id' => $id, 'user_id' => $userId, 'status' => 0])->first();
+        if ($article) {
+            //if otherTopic is not null then need to create this article
+            $article->article_topic_id = $request['articleTopicId'];
+            if ($request['otherTopic'] != null ) {
+                //to find this topic already exist or need to create
+                $existTopic = (new ArticleTopic)->getByName($request['otherTopic']);
+                if ($existTopic) {
+                    $article->article_topic_id = $existTopic->id;
+                } else {
+                    //to save new one topic and get its Id
+                    $articleTopic = new ArticleTopic;
+                    $articleTopic->name = $request['otherTopic'];
+                    $articleTopic->save();
+                    $article->article_topic_id = $articleTopic->id;
+                }
+            }
+            
+            $article->title = $request['title'];
+            $article->description = $request['description'];
+            $article->spent_hrs = $request['spentHrs'];
+            $article->save();
+            
+            return $article;
+        }
+        return null;
     }
 }
