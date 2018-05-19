@@ -63,12 +63,22 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::post('plan', 'Api\BillingPlanController@createPlan');
 	Route::delete('plan/{id}', 'Api\BillingPlanController@deletePlan');
 
-	Route::get('billing/{id?}', 'Api\BillingPlanController@billing');
+	//Route::get('billing/{id?}', 'Api\BillingPlanController@billing');
 
 	Route::post('vendor', 'Api\VendorBillingController@createVendor');
         Route::put('vendor', 'Api\VendorBillingController@createVendor');
 	Route::get('vendor/{id?}', 'Api\VendorBillingController@vendor');
 	Route::delete('vendor/{id?}', 'Api\VendorBillingController@deleteVendor');
+        
+        Route::post('billingCategory', 'Api\VendorBillingController@createBillingCategory');
+        Route::put('billingCategory', 'Api\VendorBillingController@createBillingCategory');
+	Route::get('billingCategory/{id?}', 'Api\VendorBillingController@billingCategory');
+	Route::delete('billingCategory/{id?}', 'Api\VendorBillingController@deleteBillingCategory');
+        
+        Route::post('billingSubCategory', 'Api\VendorBillingController@createBillingSubCategory');
+        Route::put('billingSubCategory', 'Api\VendorBillingController@createBillingSubCategory');
+	Route::get('billingSubCategory/{id?}', 'Api\VendorBillingController@billingSubCategory');
+	Route::delete('billingSubCategory/{id?}', 'Api\VendorBillingController@deleteBillingSubCategory');
 
         Route::post('emailtemplate', 'Api\EmailTemplateController@createEmailTemplate');
         Route::put('emailtemplate', 'Api\EmailTemplateController@createEmailTemplate');
