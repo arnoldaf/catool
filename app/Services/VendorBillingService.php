@@ -41,48 +41,55 @@ class VendorBillingService {
     public function createVendorBilling($request) {
         $messges = [];
         $validator = Validator::make($request->all(), [
-                    'vendor_id' => 'required|max:255',
+                    //'vendor_id' => 'required|max:255',
                     'bill_date' => 'required|max:255',
                     'bill_amount' => 'required|max:255',
-                    'gst_amount' => 'required|max:255',
-                    'tax_amount' => 'required|max:255'
+                    'tds_amount' => 'required|max:255'
                         ], [
-                    'vendor_id.required' => 'Vendor is required.',
+                    // 'vendor_id.required' => 'Vendor is required.',
                     'bill_date.required' => 'Bill Date is required.',
                     'bill_amount.required' => 'Bill Amount required.',
-                    'gst_amount.required' => 'Bill GST Amount is required.',
-                    'tax_amount.required' => 'Bill Tax Amount is required.',
+                    'tds_amount.required' => 'Bill Tax Amount is required.',
                         ]
         );
 
         if ($validator->fails()) {
             foreach ($validator->errors()->getMessages() as $key => $value) {
-                $messges[] = $value[0];
+                $messges[$key] = $value[0];
             }
-            return ['result' => false, 'message' => implode("<br>", $messges)];
+            return ['errors' => $messges];
         }
 
         $VendorBilling = ($request->input('id') > 0 ) ? VendorBilling::find($request->input('id')) : new VendorBilling;
-        echo $image = $request->file('bill_file');
-        $path = public_path() . '/bills/';
-        $filename = time() . '.' . $image->getClientOriginalExtension();
-        $image->move($path, $filename);
+        //$VendorBilling = ($request->input('id') > 0 ) ? VendorBilling::find($request->input('id')) : new VendorBilling;
+        /* $image = $request->file('bill_file');
+          $path = public_path() . '/bills/';
+          $filename = time() . '.' . $image->getClientOriginalExtension();
+          $image->move($path, $filename);
+         * 
+         */
 
         $VendorBilling->vendor_id = $request->input('vendor_id');
         $VendorBilling->bill_date = $request->input('bill_date');
         $VendorBilling->bill_amount = $request->input('bill_amount');
-        $VendorBilling->gst_amount = $request->input('gst_amount');
-        $VendorBilling->tax_amount = $request->input('tax_amount');
+        $VendorBilling->cgst_amount = $request->input('cgst_amount');
+        $VendorBilling->sgst_amount = $request->input('sgst_amount');
+        $VendorBilling->igst_amount = $request->input('igst_amount');
+        $VendorBilling->tds_amount = $request->input('tds_amount');
         $VendorBilling->bill_description = $request->input('bill_description');
-        $VendorBilling->bill_file = $filename;
+        //$VendorBilling->bill_file = $filename;
 
 
         $VendorBilling->save();
-        if ($request->input('id') > 0) {
-            return ['result' => true, 'message' => 'Vendor Billing updated successfully'];
-        } else {
-            return ['result' => true, 'message' => 'Vendor Billing added successfully'];
-        }
+        //$Vendor->save();
+        return ['data' > $VendorBilling->toArray(), 'errors' => ''];
+        /* if ($request->input('id') > 0) {
+          return ['result' => true, 'message' => 'Vendor Billing updated successfully'];
+          } else {
+          return ['result' => true, 'message' => 'Vendor Billing added successfully'];
+          }
+         * 
+         */
     }
 
     public function deleteVendor($request) {
@@ -104,27 +111,21 @@ class VendorBillingService {
 
     public function vendor($id) {
         if ($id != null) {
-            $vendors = DB::table('vendor')
-                            ->where('id', $id)->get();
+            $users = Vendor::find($id);
         } else {
-            $vendors = DB::table('vendor')
-                    ->get();
+            $users = Vendor::all();
         }
-        //return ['data' => $vendors];
-        return $vendors->toArray();
+
+        return $users->toArray();
     }
 
     public function vendorBilling($id) {
         if ($id != null) {
-            $bills = DB::table('vendor_billing')
-                            ->where('id', $id)->get();
+            $bills = VendorBilling::find($id);
         } else {
-            $bills = DB::table('vendor_billing')
-                    ->get();
+            $bills = VendorBilling::all();
         }
-
-        // return $roles;
-        return ['data' => $bills];
+        return $bills->toArray();
     }
 
     /**

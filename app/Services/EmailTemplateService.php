@@ -55,12 +55,23 @@ class EmailTemplateService {
          */
     }
 
-    public function deleteEmailTemplate($id) {
+   /* public function deleteEmailTemplate($id) {
         DB::table('email_templates')->where('id', '=', $id)->delete();
         return ['result' => true, 'message' => 'Email Template deleted successfully'];
     }
+    * 
+    */
+    
+    public function deleteEmailTemplate($request) {
+        $id = $request->input('id');
+        // delete
+        $template = EmailTemplate::find($id);
+        $template->delete();
+        return $template->toArray();
+    }
 
-    public function getEmailTemplate($id) {
+    
+   /* public function getEmailTemplate($id) {
         if ($id != null) {
             $emailTemplate = DB::table('email_templates')
                             ->where('id', $id)->get();
@@ -70,8 +81,17 @@ class EmailTemplateService {
                     ->get();
         }
         return ['data' => $emailTemplate];
-        
-        
+    }
+    * 
+    */
+    
+      public function getEmailTemplate($id) {
+        if ($id != null) {
+            $template = EmailTemplate::find($id);
+        } else {
+            $template = EmailTemplate::all();
+        }
+        return $template->toArray();
     }
 
     public function getEmailGroup($id) {

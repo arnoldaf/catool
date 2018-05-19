@@ -9,7 +9,9 @@ class EmailTemplateController extends ApiController {
 
     public function getEmailTemplate($id = null) {
         $data = (new EmailTemplateService)->getEmailTemplate($id);
-        return response()->json($data);
+        $this->setResponseData($data);
+        return $this->respond();
+        
     }
 
     public function getEmailGroup($id = null) {
@@ -28,9 +30,17 @@ class EmailTemplateController extends ApiController {
         return $this->respond();
     }
 
-    public function deleteEmailTemplate($id = null) {
+   /* public function deleteEmailTemplate($id = null) {
         $data = (new EmailTemplateService)->deleteEmailTemplate($id);
         return response()->json($data);
+    }
+    * 
+    */
+    
+    public function deleteEmailTemplate(Request $request) {
+        $data = (new EmailTemplateService)->deleteEmailTemplate($request);
+        $this->setResponseData($data);
+        return $this->respond();
     }
 
 }

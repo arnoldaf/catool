@@ -24,7 +24,6 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 
 	Route::get('user/{id?}', 'Api\UserController@index');
 	Route::get('users', 'Api\UserController@indexlist');
-	//Route::post('createUsers', 'Api\UserController@createUsers');
         Route::post('getUsers', 'Api\UserController@addUser');
 	Route::get('getUsers/{id?}', 'Api\UserController@getUsers');
         Route::put('getUsers/{id?}', 'Api\UserController@addUser');
@@ -34,7 +33,6 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('getCaUsers/{id?}', 'Api\UserController@getCaUsers');
         Route::put('getCaUsers/{id?}', 'Api\UserController@addCaUser');
         Route::delete('getCaUsers/{id?}', 'Api\UserController@deleteCaUsers');
-
 
 	Route::get('client/{id?}', 'Api\ClientController@index');
 	Route::get('clients', 'Api\ClientController@indexlist');
@@ -68,18 +66,25 @@ Route::group(['prefix' => 'v1/', 'middleware' => ['auth.api']], function() {
 	Route::get('billing/{id?}', 'Api\BillingPlanController@billing');
 
 	Route::post('vendor', 'Api\VendorBillingController@createVendor');
+        Route::put('vendor', 'Api\VendorBillingController@createVendor');
 	Route::get('vendor/{id?}', 'Api\VendorBillingController@vendor');
-	Route::delete('vendor/{id}', 'Api\VendorBillingController@deleteVendor');
+	Route::delete('vendor/{id?}', 'Api\VendorBillingController@deleteVendor');
 
         Route::post('emailtemplate', 'Api\EmailTemplateController@createEmailTemplate');
+        Route::put('emailtemplate', 'Api\EmailTemplateController@createEmailTemplate');
 	Route::get('emailtemplate/{id?}', 'Api\EmailTemplateController@getEmailTemplate');
-	Route::delete('emailtemplate/{id}', 'Api\EmailTemplateController@deleteEmailTemplate');
+	Route::delete('emailtemplate/{id?}', 'Api\EmailTemplateController@deleteEmailTemplate');
         Route::get('emailgroup/{id?}', 'Api\EmailTemplateController@getEmailGroup');
 
-
-	Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
-	Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
-	Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
+	//Route::post('vendorBilling', 'Api\VendorBillingController@createVendorBilling');
+	//Route::get('vendorBilling/{id?}', 'Api\VendorBillingController@vendorBilling');
+	//Route::delete('vendorBilling/{id}', 'Api\VendorBillingController@deleteVendorBilling');
+        
+        Route::post('billing', 'Api\VendorBillingController@createVendorBilling');
+        Route::put('billing', 'Api\VendorBillingController@createVendorBilling');
+	Route::get('billing/{id?}', 'Api\VendorBillingController@vendorBilling');
+	Route::delete('billing/{id?}', 'Api\VendorBillingController@deleteVendorBilling');
+        
         Route::get('articles/topics', 'Api\ArticleController@getArticleTopics');
         Route::post('articles', 'Api\ArticleController@saveArticles');
         Route::get('articles', 'Api\ArticleController@getArticles');
